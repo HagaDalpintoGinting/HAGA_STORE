@@ -1,0 +1,53 @@
+/* Shared theme overrides for HAGA STORE */
+/* Nicer alerts with glassy dark background and accent borders */
+.alert {
+  border: 1px solid rgba(255,255,255,0.12) !important;
+  background: linear-gradient(135deg, rgba(26,26,26,0.65) 0%, rgba(44,10,5,0.55) 100%) !important;
+  color: #eee !important;
+  border-radius: 12px !important;
+  padding: .6rem .9rem !important;
+  margin-bottom: 1rem !important;
+  backdrop-filter: blur(2px);
+  position: relative;
+  overflow: hidden;
+  animation: alert-fade-slide .28s ease-out both;
+}
+.alert a { color: #ffd5c8; text-decoration: underline; }
+
+/* Accent bars */
+.alert::before {
+  content: "";
+  position: absolute; left: 0; top: 0; bottom: 0;
+  width: 6px; border-radius: 12px 0 0 12px;
+  background: #ff3c00; /* default accent */
+}
+.alert-success::before { background: #1f8f4a; }
+.alert-danger::before { background: #c53030; }
+.alert-warning::before { background: #d97706; }
+.alert-info::before { background: #0ea5e9; }
+
+/* Slight tint per variant */
+.alert-success {
+  background: linear-gradient(135deg, rgba(26,26,26,0.65) 0%, rgba(15,60,35,0.40) 100%) !important;
+}
+.alert-danger {
+  background: linear-gradient(135deg, rgba(26,26,26,0.65) 0%, rgba(75,15,15,0.40) 100%) !important;
+}
+.alert-warning {
+  background: linear-gradient(135deg, rgba(26,26,26,0.65) 0%, rgba(85,55,10,0.40) 100%) !important;
+}
+.alert-info {
+  background: linear-gradient(135deg, rgba(26,26,26,0.65) 0%, rgba(15,55,85,0.40) 100%) !important;
+}
+
+/* Soft shadow and glow */
+.alert { box-shadow: 0 10px 24px rgba(255,60,0,0.10); }
+.alert-success { box-shadow: 0 10px 24px rgba(31,143,74,0.12); }
+.alert-danger { box-shadow: 0 10px 24px rgba(197,48,48,0.12); }
+.alert-warning { box-shadow: 0 10px 24px rgba(217,119,6,0.12); }
+.alert-info { box-shadow: 0 10px 24px rgba(14,165,233,0.12); }
+
+@keyframes alert-fade-slide {
+  from { opacity: 0; transform: translateY(-6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
