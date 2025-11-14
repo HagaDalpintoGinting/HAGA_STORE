@@ -49,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body {
   background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
@@ -83,18 +83,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-radius: 30px;
       padding: 10px 20px;
       font-weight: 600;
-      color: #fff;
-      border: 1px solid #555;
-      background-color: rgba(255, 255, 255, 0.05);
       transition: all 0.2s ease-in-out;
     }
-
-    .kategori-bar .btn:hover {
-      background-color: #ff3c00;
-      border-color: #ff3c00;
+    /* Fallback styling for non-themed buttons, if any remain */
+    .kategori-bar .btn:not(.btn-theme):not(.btn-outline-theme):not(.btn-white-theme) {
+      color: #fff;
+      border: 1px solid #555;
+      background-color: rgba(255,255,255,0.05);
     }
-
-    .kategori-bar .active {
+    .kategori-bar .btn:not(.btn-theme):not(.btn-outline-theme):not(.btn-white-theme):hover {
       background-color: #ff3c00;
       border-color: #ff3c00;
     }
@@ -167,18 +164,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent py-3">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-transparent py-3 navbar-themed">
     <div class="container">
       <!-- Logo kiri -->
       <a class="navbar-brand d-flex align-items-center" href="index.php">
         THREAD THEORY
       </a>
       <!-- Searchbar tengah -->
-      <form class="d-flex mx-auto w-50" method="GET" action="index.php" style="border:1px solid rgba(255,255,255,0.9); border-radius:40px; background:transparent; padding:4px;">
+      <form class="d-flex mx-auto w-50 search-bar-themed" method="GET" action="index.php">
         <div class="input-group">
-          <input class="form-control bg-transparent text-white" type="search" name="q" placeholder="Search" aria-label="Search" style="border:0; box-shadow:none; outline:0;">
-          <button class="btn text-white" type="submit" style="background:transparent; border: none;">
-        <i class="bi bi-search"></i>
+          <input class="form-control" type="search" name="q" placeholder="Search products..." aria-label="Search">
+          <button class="btn" type="submit">
+            <i class="bi bi-search"></i>
           </button>
         </div>
       </form>
@@ -217,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
         <?php else: ?>
           <!-- Tombol Login saat belum login -->
-          <a href="login.php" class="btn btn-sm ms-2" style="background-color:#ff3c00; color:#fff; border:0;">Login</a>
+          <a href="login.php" class="btn btn-theme btn-sm ms-2">Login</a>
         <?php endif; ?>
       </div>
     </div>
@@ -233,10 +230,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <!-- FILTER KATEGORI -->
     <div class="kategori-bar">
-      <a href="index.php" class="btn <?= !isset($_GET['kategori']) ? 'active' : '' ?>">All</a>
-      <a href="index.php?kategori=Clothes" class="btn <?= ($_GET['kategori'] ?? '') == 'Clothes' ? 'active' : '' ?>">Clothes</a>
-      <a href="index.php?kategori=Pants" class="btn <?= ($_GET['kategori'] ?? '') == 'Pants' ? 'active' : '' ?>">Pants</a>
-      <a href="index.php?kategori=Shoes" class="btn <?= ($_GET['kategori'] ?? '') == 'Shoes' ? 'active' : '' ?>">Shoes</a>
+      <a href="index.php" class="btn <?= !isset($_GET['kategori']) ? 'btn-theme' : 'btn-outline-theme' ?>">All</a>
+      <a href="index.php?kategori=Clothes" class="btn <?= ($_GET['kategori'] ?? '') == 'Clothes' ? 'btn-theme' : 'btn-outline-theme' ?>">Clothes</a>
+      <a href="index.php?kategori=Pants" class="btn <?= ($_GET['kategori'] ?? '') == 'Pants' ? 'btn-theme' : 'btn-outline-theme' ?>">Pants</a>
+      <a href="index.php?kategori=Shoes" class="btn <?= ($_GET['kategori'] ?? '') == 'Shoes' ? 'btn-theme' : 'btn-outline-theme' ?>">Shoes</a>
     </div>
 
     <!-- PRODUK GRID -->

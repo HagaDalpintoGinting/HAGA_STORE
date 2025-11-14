@@ -59,24 +59,26 @@ if (isset($_SESSION['user_id'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
     .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
     .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
     .thumbs img { width:64px; height:64px; object-fit:cover; border-radius:8px; cursor:pointer; border:2px solid transparent; }
     .thumbs img.active { border-color:#ff3c00; }
-    .size-btn { border:1px solid rgba(255,255,255,0.3); color:#fff; background:transparent; border-radius:8px; padding:6px 10px; }
-    .size-btn.active, .size-btn:hover { border-color:#ff3c00; color:#fff; box-shadow: 0 0 0 .15rem rgba(255,60,0,.2); }
+    .size-btn { border:1.5px solid rgba(255,255,255,0.35); color:#fff; background:transparent; border-radius:8px; padding:6px 10px; transition: all .16s ease-in-out; }
+    .size-btn.active, .size-btn:hover { border-color:#ff3c00; color:#fff; background: rgba(255,60,0,0.18); box-shadow: 0 0 0 .15rem rgba(255,60,0,.25); }
     .qty-btn { width:34px; height:34px; border:1px solid rgba(255,255,255,0.3); background:transparent; color:#fff; border-radius:8px; }
     .price, .subtotal { color:#fff; font-weight:700; }
     .tab-content { color:#fff; }
+
+    .qty-btn:hover, .qty-btn:focus { border-color:#ff3c00; box-shadow: 0 0 0 .12rem rgba(255,60,0,.18); }
   </style>
 </head>
-<body>
-  <div class="container py-4">
+<body style="padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container">
     <div class="mb-3">
-      <a href="index.php" class="btn btn-outline-light"><i class="bi bi-arrow-left"></i> Kembali</a>
+      <a href="index.php" class="btn btn-outline-theme btn-pill btn-icon-left"><i class="bi bi-arrow-left"></i> Kembali</a>
     </div>
     <?php if (isset($_GET['added'])): ?><div class="alert alert-success py-2">Ditambahkan ke keranjang.</div><?php endif; ?>
     <div class="row g-4">
@@ -123,14 +125,14 @@ if (isset($_SESSION['user_id'])) {
           </div>
 
           <div class="d-flex gap-2 mb-3">
-            <a href="#" id="chatBtn" class="btn btn-outline-light"><i class="bi bi-chat-dots"></i> Chat</a>
+            <a href="#" id="chatBtn" class="btn btn-outline-theme btn-pill btn-icon-left"><i class="bi bi-chat-dots"></i> Chat</a>
             <form method="POST">
               <input type="hidden" name="action" value="toggle_wishlist">
-              <button type="submit" class="btn btn-outline-light">
+              <button type="submit" class="btn btn-outline-theme btn-pill btn-icon-left">
                 <i class="bi bi-heart<?= $isWish ? '-fill text-danger' : '' ?>"></i> Wishlist
               </button>
             </form>
-            <a href="#" class="btn btn-outline-light" onclick="navigator.clipboard.writeText(window.location.href); return false;"><i class="bi bi-share"></i> Share</a>
+            <a href="#" class="btn btn-outline-theme btn-pill btn-icon-left" onclick="navigator.clipboard.writeText(window.location.href); return false;"><i class="bi bi-share"></i> Share</a>
           </div>
 
           <div class="d-flex gap-2">
@@ -138,13 +140,13 @@ if (isset($_SESSION['user_id'])) {
               <input type="hidden" name="action" value="add_to_cart">
               <input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>">
               <input type="hidden" name="qty" id="formQty1" value="1">
-              <button class="btn btn-outline-light">+ Keranjang</button>
+              <button class="btn btn-outline-theme btn-pill btn-icon-left">+ Keranjang</button>
             </form>
             <form method="POST">
               <input type="hidden" name="action" value="buy_now">
               <input type="hidden" name="product_id" value="<?= (int)$p['id'] ?>">
               <input type="hidden" name="qty" id="formQty2" value="1">
-              <button class="btn btn-theme">Beli Langsung</button>
+              <button class="btn btn-theme btn-pill btn-icon-left">Beli Langsung</button>
             </form>
           </div>
         </div>

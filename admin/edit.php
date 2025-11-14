@@ -64,49 +64,110 @@ if (isset($_POST['update'])) {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Edit Produk</title>
+  <title>Edit Produk - Admin | THREAD THEORY</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link href="../public/theme.css?v=1763094445" rel="stylesheet">
+  <link href="theme.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
-<body class="p-4 bg-light">
-  <div class="container">
-    <h2 class="mb-4">Edit Produk</h2>
-    <form method="POST" enctype="multipart/form-data">
-      <input type="text" name="nama" value="<?= htmlspecialchars($p['nama']) ?>" class="form-control mb-2" required>
-      <input type="number" name="harga" value="<?= $p['harga'] ?>" class="form-control mb-2" required>
-      <div class="row g-2 mb-2">
-        <div class="col-md-6"><input type="number" name="stock" value="<?= (int)($p['stock'] ?? 0) ?>" class="form-control" min="0" placeholder="Stock"></div>
-        <div class="col-md-6"><input type="text" name="sizes" value="<?= htmlspecialchars($p['sizes'] ?? '') ?>" class="form-control" placeholder="Ukuran tersedia (contoh: M,L,XL,XXL)"></div>
-      </div>
-      <textarea name="deskripsi" class="form-control mb-2" rows="3"><?= htmlspecialchars($p['deskripsi']) ?></textarea>
-      <select name="kategori" class="form-control mb-2" required>
-        <option value="Clothes" <?= $p['kategori'] == 'Clothes' ? 'selected' : '' ?>>Clothes</option>
-        <option value="Pants" <?= $p['kategori'] == 'Pants' ? 'selected' : '' ?>>Pants</option>
-        <option value="Shoes" <?= $p['kategori'] == 'Shoes' ? 'selected' : '' ?>>Shoes</option>
-      </select>
-      <input type="file" name="gambar" class="form-control mb-2">
-      <div class="mb-2">
-        <img src="../uploads/<?= $p['gambar'] ?>" width="120" alt="Gambar Sekarang">
-      </div>
-      <label class="form-label">Tambahkan Foto Galeri</label>
-      <input type="file" name="galeri[]" class="form-control mb-2" multiple>
-
-      <?php
-      $gal = mysqli_query($conn, "SELECT * FROM produk_images WHERE produk_id=$id ORDER BY sort_order, id");
-      if (mysqli_num_rows($gal) > 0): ?>
-        <div class="mb-3">
-          <div class="d-flex flex-wrap gap-2">
-            <?php while($gi = mysqli_fetch_assoc($gal)): ?>
-              <div class="border p-1 text-center">
-                <img src="../uploads/<?= htmlspecialchars($gi['filename']) ?>" width="80" height="80" style="object-fit:cover">
-                <div><a href="delete_image.php?id=<?= (int)$gi['id'] ?>&pid=<?= (int)$id ?>" class="btn btn-sm btn-outline-danger mt-1" onclick="return confirm('Hapus gambar ini?')">Hapus</a></div>
-              </div>
-            <?php endwhile; ?>
+<body class="p-4">
+  <div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2><i class="bi bi-pencil-square"></i> Edit Produk</h2>
+        <a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Kembali</a>
+    </div>
+    
+    <div class="card p-4">
+        <form method="POST" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Nama Produk</label>
+            <input type="text" name="nama" value="<?= htmlspecialchars($p['nama']) ?>" class="form-control" required>
           </div>
-        </div>
-      <?php endif; ?>
-      <button name="update" class="btn btn-primary">Update</button>
-      <a href="index.php" class="btn btn-secondary ms-2">Kembali</a>
-    </form>
+          <div class="mb-3">
+            <label class="form-label">Harga</label>
+            <input type="number" name="harga" value="<?= $p['harga'] ?>" class="form-control" required>
+          </div>
+          <div class="row g-3 mb-3">
+            <div class="col-md-6">
+              <label class="form-label">Stock</label>
+              <input type="number" name="stock" value="<?= (int)($p['stock'] ?? 0) ?>" class="form-control" min="0" placeholder="Stock">
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Ukuran</label>
+              <input type="text" name="sizes" value="<?= htmlspecialchars($p['sizes'] ?? '') ?>" class="form-control" placeholder="Contoh: M,L,XL,XXL">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Deskripsi</label>
+            <textarea name="deskripsi" class="form-control" rows="4"><?= htmlspecialchars($p['deskripsi']) ?></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Kategori</label>
+            <select name="kategori" class="form-select" required>
+              <option value="Clothes" <?= $p['kategori'] == 'Clothes' ? 'selected' : '' ?>>Clothes</option>
+              <option value="Pants" <?= $p['kategori'] == 'Pants' ? 'selected' : '' ?>>Pants</option>
+              <option value="Shoes" <?= $p['kategori'] == 'Shoes' ? 'selected' : '' ?>>Shoes</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Ganti Gambar Utama</label>
+            <input type="file" name="gambar" class="form-control">
+            <div class="mt-2">
+              <img src="../uploads/<?= $p['gambar'] ?>" width="120" alt="Gambar Sekarang" class="rounded">
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Tambahkan Foto Galeri (bisa pilih lebih dari satu)</label>
+            <input type="file" name="galeri[]" class="form-control" multiple>
+          </div>
+
+          <?php
+          $gal = mysqli_query($conn, "SELECT * FROM produk_images WHERE produk_id=$id ORDER BY sort_order, id");
+          if (mysqli_num_rows($gal) > 0): ?>
+            <div class="mb-3">
+              <label class="form-label">Galeri Saat Ini</label>
+              <div class="d-flex flex-wrap gap-2">
+                <?php while($gi = mysqli_fetch_assoc($gal)): ?>
+                  <div class="border p-1 text-center bg-dark rounded">
+                    <img src="../uploads/<?= htmlspecialchars($gi['filename']) ?>" width="80" height="80" style="object-fit:cover" class="rounded">
+                    <div><a href="delete_image.php?id=<?= (int)$gi['id'] ?>&pid=<?= (int)$id ?>" class="btn btn-sm btn-outline-danger mt-1 delete-btn">Hapus</a></div>
+                  </div>
+                <?php endwhile; ?>
+              </div>
+            </div>
+          <?php endif; ?>
+          <div class="mt-4">
+            <button name="update" class="btn btn-theme"><i class="bi bi-check-circle"></i> Update Produk</button>
+          </div>
+        </form>
+    </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(button => {
+            button.addEventListener('click', function (e) {
+                e.preventDefault();
+                const url = this.href;
+                Swal.fire({
+                    title: 'Anda yakin?',
+                    text: "Gambar ini akan dihapus permanen!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    });
+  </script>
 </body>
 </html>

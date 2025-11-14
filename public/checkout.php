@@ -85,7 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
     .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
@@ -95,14 +95,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     footer { background: transparent !important; box-shadow:none !important; }
   </style>
 </head>
-<body>
-  <div class="container py-4">
+<body style="padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-xl-10">
         <div class="p-3 p-md-4 card-glass">
-          <div class="d-flex align-items-center mb-3">
-            <i class="bi bi-credit-card text-light me-2" style="font-size:1.6rem;"></i>
-            <h1 class="h5 m-0 brand-title">Checkout</h1>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-credit-card text-light me-2" style="font-size:1.6rem;"></i>
+              <h1 class="h5 m-0 brand-title">Checkout</h1>
+            </div>
+            <a href="cart.php" class="btn btn-sm btn-outline-theme"><i class="bi bi-arrow-left"></i> Kembali ke Keranjang</a>
           </div>
 
           <div class="row g-3">

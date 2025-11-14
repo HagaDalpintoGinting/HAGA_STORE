@@ -223,7 +223,7 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #eee; }
     .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
@@ -243,8 +243,7 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
     }
     .form-select.bg-glass:focus { background-color: transparent; color: #fff; border-color: #ff3c00; box-shadow: 0 0 0 .25rem rgba(255,60,0,.15); }
     .form-select.bg-glass option { background-color: #1e1e1e; color: #fff; }
-    .btn-theme { background-color: #ff3c00; color: #fff; border: 0; }
-    .btn-theme:hover { background-color: #ff521f; color: #fff; }
+    /* Buttons use global theme.css */
     a.link-light-orange { color: #ff7a52; text-decoration: none; }
     a.link-light-orange:hover { color: #ffa284; }
     .nav-tabs .nav-link { color: #ddd; }
@@ -254,14 +253,17 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
     .badge-verified { background: #1f8f4a; }
   </style>
 </head>
-<body>
-  <div class="container py-4">
+<body style="padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-xl-10">
         <div class="p-3 p-md-4 card-glass">
-          <div class="d-flex align-items-center mb-3">
-            <i class="bi bi-person-circle text-light me-2" style="font-size:1.6rem;"></i>
-            <h1 class="h5 m-0 brand-title">Profil Saya</h1>
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center">
+              <i class="bi bi-person-circle text-light me-2" style="font-size:1.6rem;"></i>
+              <h1 class="h5 m-0 brand-title">Profil Saya</h1>
+            </div>
+            <a href="index.php" class="btn btn-sm btn-outline-theme"><i class="bi bi-house"></i> Kembali ke Home</a>
           </div>
 
           <?php if ($msg): ?>
@@ -383,13 +385,13 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
                     <form method="POST">
                       <input type="hidden" name="action" value="set_default_address">
                       <input type="hidden" name="addr_id" value="<?= (int)$a['id'] ?>">
-                      <button class="btn btn-sm btn-outline-light" type="submit">Jadikan Utama</button>
+                      <button class="btn btn-sm btn-outline-theme" type="submit">Jadikan Utama</button>
                     </form>
                     <?php endif; ?>
-                    <form method="POST" onsubmit="return confirm('Hapus alamat ini?');">
+                    <form method="POST" class="form-hapus-alamat">
                       <input type="hidden" name="action" value="delete_address">
                       <input type="hidden" name="addr_id" value="<?= (int)$a['id'] ?>">
-                      <button class="btn btn-sm btn-outline-danger" type="submit">Hapus</button>
+                      <button class="btn btn-sm btn-outline-theme" type="submit">Hapus</button>
                     </form>
                   </div>
                 </div>
@@ -485,5 +487,31 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    document.querySelectorAll('.form-hapus-alamat').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        
+        Swal.fire({
+          title: 'Hapus Alamat?',
+          text: "Alamat ini akan dihapus secara permanen.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonText: 'Ya, Hapus!',
+          cancelButtonText: 'Batal',
+          customClass: {
+            popup: 'swal2-popup',
+            confirmButton: 'swal2-confirm',
+            cancelButton: 'swal2-cancel'
+          }
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        })
+      });
+    });
+  </script>
 </body>
 </html>

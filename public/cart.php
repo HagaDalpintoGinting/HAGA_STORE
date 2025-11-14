@@ -50,7 +50,7 @@ if (!empty($_SESSION['cart'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
     .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
@@ -58,8 +58,7 @@ if (!empty($_SESSION['cart'])) {
     .form-control.bg-glass { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .form-control.bg-glass:focus { background: transparent; color: #fff; border-color: #ff3c00; box-shadow: 0 0 0 .25rem rgba(255,60,0,.15); }
     .form-control.bg-glass::placeholder { color: rgba(255,255,255,0.85); opacity: 1; }
-    .btn-theme { background-color: #ff3c00; color: #fff; border: 0; }
-    .btn-theme:hover { background-color: #ff521f; color: #fff; }
+    /* Buttons use global theme.css */
     a.link-light-orange { color: #ff7a52; text-decoration: none; }
     a.link-light-orange:hover { color: #ffa284; }
 
@@ -81,8 +80,8 @@ if (!empty($_SESSION['cart'])) {
     footer { background: transparent !important; box-shadow: none !important; }
   </style>
 </head>
-<body>
-  <div class="container py-4">
+<body style="padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-xl-10">
         <div class="p-3 p-md-4 card-glass">
@@ -124,15 +123,15 @@ if (!empty($_SESSION['cart'])) {
                           <input type="hidden" name="action" value="update_qty">
                           <input type="hidden" name="product_id" value="<?= (int)$it['id'] ?>">
                           <input type="number" class="form-control bg-glass" name="qty" value="<?= (int)$it['qty'] ?>" min="1" style="width:80px;">
-                          <button class="btn btn-sm btn-outline-light" type="submit">Ubah</button>
+                          <button class="btn btn-sm btn-outline-theme" type="submit">Ubah</button>
                         </form>
                       </td>
                       <td class="subtotal">Rp <?= number_format($it['subtotal'],0,',','.') ?></td>
                       <td>
-                        <form method="POST" onsubmit="return confirm('Hapus item ini?');">
+                        <form method="POST" class="form-hapus-item">
                           <input type="hidden" name="action" value="remove">
                           <input type="hidden" name="product_id" value="<?= (int)$it['id'] ?>">
-                          <button class="btn btn-sm btn-outline-danger" type="submit">Hapus</button>
+                          <button class="btn btn-sm btn-outline-theme" type="submit">Hapus</button>
                         </form>
                       </td>
                     </tr>
@@ -141,14 +140,14 @@ if (!empty($_SESSION['cart'])) {
               </table>
             </div>
             <div class="d-flex justify-content-between align-items-center mt-3">
-              <form method="POST">
+              <form method="POST" class="form-kosongkan-keranjang">
                 <input type="hidden" name="action" value="clear">
-                <button type="submit" class="btn btn-outline-light">Kosongkan Keranjang</button>
+                <button type="submit" class="btn btn-outline-theme">Kosongkan Keranjang</button>
               </form>
               <div class="h5 m-0">Total: Rp <?= number_format($total,0,',','.') ?></div>
             </div>
             <div class="text-end mt-3">
-              <a href="index.php" class="btn btn-outline-light me-2">Lanjut Belanja</a>
+              <a href="index.php" class="btn btn-outline-theme me-2">Lanjut Belanja</a>
               <a href="checkout.php" class="btn btn-theme">Lanjut Pembayaran</a>
             </div>
           <?php endif; ?>
@@ -158,5 +157,52 @@ if (!empty($_SESSION['cart'])) {
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const swalConfig = {
+      icon: 'warning',
+      showCancelButton: true,
+      customClass: {
+        popup: 'swal2-popup',
+        confirmButton: 'swal2-confirm',
+        cancelButton: 'swal2-cancel'
+      }
+    };
+
+    document.querySelectorAll('.form-hapus-item').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        Swal.fire({
+          ...swalConfig,
+          title: 'Hapus Item?',
+          text: "Item ini akan dihapus dari keranjang Anda.",
+          confirmButtonText: 'Ya, Hapus!',
+          cancelButtonText: 'Batal',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        });
+      });
+    });
+
+    const formKosongkan = document.querySelector('.form-kosongkan-keranjang');
+    if(formKosongkan) {
+      formKosongkan.addEventListener('submit', function(e) {
+        e.preventDefault();
+        Swal.fire({
+          ...swalConfig,
+          title: 'Kosongkan Keranjang?',
+          text: "Semua item di keranjang akan dihapus. Anda yakin?",
+          confirmButtonText: 'Ya, Kosongkan!',
+          cancelButtonText: 'Batal',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        });
+      });
+    }
+  </script>
 </body>
 </html>

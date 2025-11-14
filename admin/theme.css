@@ -1,0 +1,88 @@
+/* Admin Panel Specific Styles */
+body {
+  background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
+  font-family: 'Quicksand', sans-serif;
+  color: #fff;
+}
+
+.card {
+  background: linear-gradient(135deg, rgba(35, 35, 35, 0.85), rgba(50, 25, 20, 0.9));
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  color: #fff;
+}
+
+.form-control, .form-select {
+    background-color: rgba(255,255,255,0.05) !important;
+    border: 1px solid rgba(255,255,255,0.2) !important;
+    color: #fff !important;
+}
+
+.form-control::placeholder { color: #aaa !important; }
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--tt-orange) !important;
+    box-shadow: 0 0 15px rgba(255, 60, 0, 0.2) !important;
+}
+
+h2, h4 {
+    font-family: 'Anton', sans-serif;
+    color: var(--tt-orange);
+    letter-spacing: 1px;
+}
+
+.form-label {
+  color: #eee;
+  opacity: 0.9;
+}
+
+/* Perjelas semua teks di dalam card (detail order, label, dsb.) */
+.card p,
+.card span,
+.card small,
+.card label,
+.card .form-label,
+.card .row div,
+.card strong,
+.card h5,
+.card h6 {
+  color: #fff !important;
+}
+
+.form-select option {
+  background: var(--tt-brown-dark, #3a170a);
+  color: #fff;
+}
+
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-border-color: rgba(255,255,255,0.2);
+    --bs-table-color: #fff;
+}
+
+.table-striped > tbody > tr:nth-of-type(odd) > * {
+    --bs-table-accent-bg: rgba(255, 255, 255, 0.04);
+}
+
+thead {
+    color: var(--tt-orange);
+}
+
+/* Pastikan teks tabel selalu putih dan tidak berubah saat hover */
+.table tr td,
+.table tr th {
+  color: #fff !important;
+}
+
+/* Hilangkan efek hover pada teks tabel */
+.table-hover tbody tr:hover td,
+.table-hover tbody tr:hover th {
+  color: #fff !important;
+}
+
+/* Tambah sedikit highlight pada baris hover agar teks lebih terbaca */
+.table-hover tbody tr:hover > * {
+    background-color: rgba(255, 255, 255, 0.06) !important;
+}

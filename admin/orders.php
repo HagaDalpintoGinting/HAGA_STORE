@@ -47,7 +47,11 @@ if ($viewId > 0 && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update
 }
 
 if ($viewId > 0) {
-  $res = mysqli_query($conn, "SELECT * FROM order_items WHERE order_id = $viewId ORDER BY id ASC");
+  $res = mysqli_query($conn, "SELECT oi.*, p.nama AS product_name 
+                               FROM order_items oi 
+                               LEFT JOIN produk p ON p.id = oi.produk_id 
+                               WHERE oi.order_id = $viewId 
+                               ORDER BY oi.id ASC");
   while ($r = mysqli_fetch_assoc($res)) { $items[] = $r; }
   $od = mysqli_query($conn, "SELECT * FROM orders WHERE id=$viewId");
   $orderDetail = mysqli_fetch_assoc($od);
@@ -56,28 +60,32 @@ if ($viewId > 0) {
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Orders - Admin | HAGA STORE</title>
+  <title>Orders - Admin | THREAD THEORY</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link href="../public/theme.css?v=1763094445" rel="stylesheet">
+  <link href="theme.css" rel="stylesheet">
 </head>
-<body class="p-4 bg-light">
-  <div class="container">
+<body class="p-4">
+  <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>Orders</h2>
+      <h2><i class="bi bi-box-seam"></i> Orders</h2>
       <div>
-        <a href="index.php" class="btn btn-outline-secondary">Kembali ke Produk</a>
-        <a href="logout.php" class="btn btn-outline-danger">Logout</a>
+        <a href="index.php" class="btn btn-outline-secondary"><i class="bi bi-arrow-left"></i> Kembali ke Produk</a>
+        <a href="logout.php" class="btn btn-outline-danger"><i class="bi bi-box-arrow-right"></i> Logout</a>
       </div>
     </div>
 
     <?php if ($viewId > 0 && $orderDetail): ?>
       <div class="card mb-4">
         <div class="card-body">
-          <h5 class="card-title mb-3">Order #<?= (int)$orderDetail['id'] ?> Detail</h5>
+          <h4 class="card-title mb-3">Order #<?= (int)$orderDetail['id'] ?> Detail</h4>
           <div class="row mb-3">
-            <div class="col-md-3"><strong>User:</strong> <?= htmlspecialchars($orderDetail['user_id']) ?></div>
-            <div class="col-md-3"><strong>Status:</strong> <?= htmlspecialchars($orderDetail['status']) ?></div>
+            <div class="col-md-3"><strong>User ID:</strong> <?= htmlspecialchars($orderDetail['user_id'] ?? '') ?></div>
+            <div class="col-md-3"><strong>Status:</strong> <span class="badge bg-info"><?= htmlspecialchars($orderDetail['status'] ?? '') ?></span></div>
             <div class="col-md-3"><strong>Total:</strong> Rp <?= number_format((int)($orderDetail['total'] ?? 0),0,',','.') ?></div>
-            <div class="col-md-3"><strong>Tanggal:</strong> <?= htmlspecialchars($orderDetail['created_at']) ?></div>
+            <div class="col-md-3"><strong>Tanggal:</strong> <?= htmlspecialchars($orderDetail['created_at'] ?? '') ?></div>
           </div>
           <?php $cur = $orderDetail['status'] ?? 'pending'; ?>
           <?php if (!in_array(strtolower($cur), ['completed','cancelled'])): ?>
@@ -95,99 +103,59 @@ if ($viewId > 0) {
               <input type="text" name="tracking_number" class="form-control" value="<?= htmlspecialchars($orderDetail['tracking_number'] ?? '') ?>" placeholder="Mis. JNE-AB12345">
             </div>
             <div class="col-md-2">
-              <button class="btn btn-primary w-100" name="update_status" value="1">Update Status</button>
+              <button class="btn btn-theme w-100" name="update_status" value="1">Update Status</button>
             </div>
           </form>
           <?php endif; ?>
-          <div class="row">
-              <div class="col-md-6">
-                <strong>Alamat</strong>
-                <?php $addr = json_decode($orderDetail['address_snapshot'] ?? '', true); ?>
-                <?php if (is_array($addr) && !empty($addr)): ?>
-                  <div class="mt-1">
-                    <div><span class="text-muted">Nama:</span> <?= htmlspecialchars($addr['recipient_name'] ?? '-') ?></div>
-                    <div><span class="text-muted">Telepon:</span> <?= htmlspecialchars($addr['phone'] ?? '-') ?></div>
-                    <div><span class="text-muted">Label:</span> <?= htmlspecialchars($addr['label'] ?? '-') ?></div>
-                    <div><span class="text-muted">Alamat:</span> <?= htmlspecialchars($addr['address_text'] ?? '-') ?></div>
-                    <div><span class="text-muted">Kota/Kode Pos:</span> <?= htmlspecialchars(($addr['city'] ?? '-'). ' ' .($addr['postal_code'] ?? '')) ?></div>
-                  </div>
-                <?php else: ?>
-                  <div class="text-muted">Tidak ada data alamat.</div>
-                <?php endif; ?>
-              </div>
-              <div class="col-md-6">
-                <strong>Pembayaran</strong>
-                <?php $pay = json_decode($orderDetail['payment_snapshot'] ?? '', true); ?>
-                <?php if (is_array($pay) && !empty($pay)): ?>
-                  <div class="mt-1">
-                    <div><span class="text-muted">Metode:</span> <?= htmlspecialchars($pay['method'] ?? '-') ?></div>
-                    <div><span class="text-muted">Provider:</span> <?= htmlspecialchars($pay['provider'] ?? '-') ?></div>
-                    <div><span class="text-muted">Nama Akun:</span> <?= htmlspecialchars($pay['account_name'] ?? '-') ?></div>
-                    <div><span class="text-muted">No. Akun:</span> <?= htmlspecialchars($pay['account_number'] ?? '-') ?></div>
-                  </div>
-                <?php else: ?>
-                  <div class="text-muted">Tidak ada data pembayaran.</div>
-                <?php endif; ?>
-              </div>
-          </div>
-          <hr>
-          <h6 class="mb-2">Items</h6>
-          <div class="table-responsive">
-            <table class="table table-bordered table-sm">
-              <thead class="table-secondary">
-                <tr>
-                  <th>Produk</th>
-                  <th>Harga</th>
-                  <th>Qty</th>
-                  <th>Subtotal</th>
-                </tr>
-              </thead>
+          <hr style="border-color: rgba(255,255,255,0.2);">
+          <h5>Items</h5>
+          <table class="table table-sm">
+              <thead><tr><th>Produk</th><th>Qty</th><th>Harga</th><th>Subtotal</th></tr></thead>
               <tbody>
-                <?php foreach ($items as $it): ?>
-                  <tr>
-                    <td><?= htmlspecialchars($it['nama']) ?></td>
-                    <td>Rp <?= number_format((int)$it['harga'],0,',','.') ?></td>
-                    <td><?= (int)$it['qty'] ?></td>
-                    <td>Rp <?= number_format($it['subtotal'],0,',','.') ?></td>
-                  </tr>
-                <?php endforeach; ?>
+              <?php foreach($items as $item): ?>
+              <tr>
+                <td><?= htmlspecialchars($item['nama'] ?? ($item['product_name'] ?? 'Produk')) ?></td>
+                <td><?= (int)($item['qty'] ?? 0) ?></td>
+                <td>Rp <?= number_format((int)($item['harga'] ?? 0), 0, ',', '.') ?></td>
+                <td>Rp <?= number_format((int)($item['subtotal'] ?? ((int)($item['harga'] ?? 0) * (int)($item['qty'] ?? 0))), 0, ',', '.') ?></td>
+              </tr>
+              <?php endforeach; ?>
               </tbody>
-            </table>
-          </div>
+          </table>
         </div>
       </div>
     <?php endif; ?>
 
-    <div class="card">
-      <div class="card-body">
-        <h5 class="card-title">Daftar Orders Terbaru</h5>
-        <div class="table-responsive">
-          <table class="table table-bordered mt-3">
-            <thead class="table-secondary">
-              <tr>
-                <th>ID</th>
-                <th>User</th>
-                <th>Status</th>
-                <th>Total</th>
-                <th>Tanggal</th>
-                <th>Aksi</th>
-              </tr>
-            </thead>
-            <tbody>
-              <?php while ($o = mysqli_fetch_assoc($orders)): ?>
+    <div class="card p-4">
+        <h4>Daftar Semua Order</h4>
+        <div class="table-responsive mt-3">
+            <table class="table table-bordered table-striped table-hover">
+              <thead>
                 <tr>
-                  <td><?= (int)$o['id'] ?></td>
-                  <td><?= htmlspecialchars($o['user_name'] ?? ('#'.$o['user_id'])) ?></td>
-                  <td><?= htmlspecialchars($o['status']) ?></td>
-                  <td>Rp <?= number_format((int)($o['total'] ?? 0),0,',','.') ?></td>
-                  <td><?= htmlspecialchars($o['created_at']) ?></td>
-                  <td><a class="btn btn-sm btn-primary" href="orders.php?id=<?= (int)$o['id'] ?>">Lihat</a></td>
+                  <th>ID</th>
+                  <th>User</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Tanggal</th>
+                  <th>Aksi</th>
                 </tr>
-              <?php endwhile; ?>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <?php while($order = mysqli_fetch_assoc($orders)): ?>
+                <tr>
+                  <td><?= $order['id'] ?></td>
+                  <td><?= htmlspecialchars($order['user_name'] ?? 'Guest') ?> (<?= htmlspecialchars($order['user_email'] ?? 'N/A') ?>)</td>
+                  <td>Rp <?= number_format($order['total'], 0, ',', '.') ?></td>
+                  <td><span class="badge bg-primary"><?= htmlspecialchars($order['status'] ?? '') ?></span></td>
+                  <td><?= htmlspecialchars($order['created_at'] ?? '') ?></td>
+                  <td>
+                    <a href="?id=<?= $order['id'] ?>" class="btn btn-sm btn-outline-info">Detail</a>
+                  </td>
+                </tr>
+                <?php endwhile; ?>
+              </tbody>
+            </table>
         </div>
-      </div>
     </div>
   </div>
 </body>

@@ -49,17 +49,17 @@ function rupiah($n){ return 'Rp '.number_format((int)$n,0,',','.'); }
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
     .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
     .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
   </style>
 </head>
-<body>
-  <div class="container py-4">
+<body style="padding-top: 2rem; padding-bottom: 2rem;">
+  <div class="container">
     <div class="mb-3">
-      <a href="index.php" class="btn btn-outline-light"><i class="bi bi-arrow-left"></i> Kembali</a>
+      <a href="index.php" class="btn btn-outline-theme"><i class="bi bi-arrow-left"></i> Kembali</a>
     </div>
     <div class="card-glass p-3 p-md-4">
       <div class="d-flex align-items-center mb-3">
@@ -98,17 +98,17 @@ function rupiah($n){ return 'Rp '.number_format((int)$n,0,',','.'); }
             <?php if (!in_array($status, ['completed','cancelled'])): ?>
               <div class="d-flex gap-2 mt-2">
                 <?php if (in_array($status, ['shipped','paid'])): ?>
-                <form method="POST" onsubmit="return confirm('Terima pesanan ini?');">
+                <form method="POST" class="form-terima-pesanan">
                   <input type="hidden" name="order_id" value="<?= $oid ?>">
                   <input type="hidden" name="action" value="accept">
-                  <button class="btn btn-sm btn-success">Terima Pesanan</button>
+                  <button class="btn btn-sm btn-theme">Terima Pesanan</button>
                 </form>
                 <?php endif; ?>
                 <?php if (in_array($status, ['pending','paid'])): ?>
-                <form method="POST" onsubmit="return confirm('Batalkan pesanan ini? Stok akan dikembalikan.');">
+                <form method="POST" class="form-batal-pesanan">
                   <input type="hidden" name="order_id" value="<?= $oid ?>">
                   <input type="hidden" name="action" value="cancel">
-                  <button class="btn btn-sm btn-outline-danger">Batalkan Pesanan</button>
+                  <button class="btn btn-sm btn-outline-theme">Batalkan Pesanan</button>
                 </form>
                 <?php endif; ?>
               </div>
@@ -141,5 +141,52 @@ function rupiah($n){ return 'Rp '.number_format((int)$n,0,',','.'); }
       <?php endif; ?>
     </div>
   </div>
+  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const swalConfig = {
+      icon: 'warning',
+      showCancelButton: true,
+      customClass: {
+        popup: 'swal2-popup',
+        confirmButton: 'swal2-confirm',
+        cancelButton: 'swal2-cancel'
+      }
+    };
+
+    document.querySelectorAll('.form-terima-pesanan').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        Swal.fire({
+          ...swalConfig,
+          title: 'Konfirmasi Penerimaan',
+          text: "Apakah Anda yakin sudah menerima pesanan ini?",
+          icon: 'question',
+          confirmButtonText: 'Ya, Sudah Diterima',
+          cancelButtonText: 'Batal',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        });
+      });
+    });
+
+    document.querySelectorAll('.form-batal-pesanan').forEach(form => {
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        Swal.fire({
+          ...swalConfig,
+          title: 'Batalkan Pesanan?',
+          text: "Stok produk akan dikembalikan. Anda yakin?",
+          confirmButtonText: 'Ya, Batalkan',
+          cancelButtonText: 'Tidak',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            this.submit();
+          }
+        });
+      });
+    });
+  </script>
 </body>
 </html>

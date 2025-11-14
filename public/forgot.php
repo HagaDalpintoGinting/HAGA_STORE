@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
-  <link href="theme.css" rel="stylesheet">
+  <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body {
       background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
@@ -100,8 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       box-shadow: 0 0 0 .25rem rgba(255,60,0,.15);
     }
     .form-control::placeholder { color: rgba(255,255,255,0.8); opacity: 1; }
-    .btn-theme { background-color: #ff3c00; color: #fff; border: 0; }
-    .btn-theme:hover { background-color: #ff521f; color: #fff; }
+    /* Buttons use global theme.css */
     a.link-light-orange { color: #ff7a52; text-decoration: none; }
     a.link-light-orange:hover { color: #ffa284; }
   </style>
