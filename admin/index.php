@@ -15,10 +15,23 @@ if (isset($_POST['simpan'])) {
     $gambar = $_FILES['gambar']['name'];
     $tmp = $_FILES['gambar']['tmp_name'];
 
+    $stock = (int)($_POST['stock'] ?? 0);
+    $sizes = trim($_POST['sizes'] ?? 'M,L,XL,XXL');
     if ($gambar != '') {
-        move_uploaded_file($tmp, "../uploads/" . $gambar);
-        mysqli_query($conn, "INSERT INTO produk (nama, harga, gambar, deskripsi, kategori)
-                             VALUES ('$nama','$harga','$gambar','$deskripsi','$kategori')");
+      move_uploaded_file($tmp, "../uploads/" . $gambar);
+      mysqli_query($conn, "INSERT INTO produk (nama, harga, stock, sizes, gambar, deskripsi, kategori)
+                 VALUES ('$nama','$harga','$stock','".mysqli_real_escape_string($conn,$sizes)."','$gambar','$deskripsi','$kategori')");
+
+      $pid = mysqli_insert_id($conn);
+      if (!empty($_FILES['galeri']['name'][0])) {
+        foreach ($_FILES['galeri']['name'] as $i => $gname) {
+          if (!$gname) continue;
+          $gtmp = $_FILES['galeri']['tmp_name'][$i];
+          $safe = time().'_'.preg_replace('/[^a-zA-Z0-9_.-]/','',$gname);
+          move_uploaded_file($gtmp, "../uploads/".$safe);
+          mysqli_query($conn, "INSERT INTO produk_images (produk_id, filename, sort_order) VALUES ($pid, '".$safe."', $i)");
+        }
+      }
     }
     header("Location: index.php");
     exit;
@@ -34,7 +47,10 @@ if (isset($_POST['simpan'])) {
   <div class="container">
     <div class="d-flex justify-content-between align-items-center mb-4">
       <h2>Admin Panel - HAGA STORE</h2>
-      <a href="logout.php" class="btn btn-outline-danger">Logout</a>
+      <div>
+        <a href="orders.php" class="btn btn-outline-primary me-2">Orders</a>
+        <a href="logout.php" class="btn btn-outline-danger">Logout</a>
+      </div>
     </div>
 
     <div class="card p-4 mb-4 shadow">
@@ -42,6 +58,10 @@ if (isset($_POST['simpan'])) {
       <form method="POST" enctype="multipart/form-data">
         <input type="text" name="nama" class="form-control mb-2" placeholder="Nama produk" required>
         <input type="number" name="harga" class="form-control mb-2" placeholder="Harga" required>
+        <div class="row g-2 mb-2">
+          <div class="col-md-6"><input type="number" name="stock" class="form-control" placeholder="Stock" min="0" value="0"></div>
+          <div class="col-md-6"><input type="text" name="sizes" class="form-control" placeholder="Ukuran tersedia (contoh: M,L,XL,XXL)" value="M,L,XL,XXL"></div>
+        </div>
         <textarea name="deskripsi" class="form-control mb-2" placeholder="Deskripsi produk" rows="3" required></textarea>
         <select name="kategori" class="form-control mb-2" required>
           <option value="">-- Pilih Kategori --</option>
@@ -50,6 +70,8 @@ if (isset($_POST['simpan'])) {
           <option value="Shoes">Shoes</option>
         </select>
         <input type="file" name="gambar" class="form-control mb-2" required>
+        <label class="form-label">Galeri (boleh lebih dari satu)</label>
+        <input type="file" name="galeri[]" class="form-control mb-3" multiple>
         <button name="simpan" class="btn btn-success">Simpan Produk</button>
       </form>
     </div>
@@ -62,6 +84,8 @@ if (isset($_POST['simpan'])) {
             <th>Nama</th>
             <th>Harga</th>
             <th>Kategori</th>
+            <th>Stock</th>
+            <th>Ukuran</th>
             <th>Deskripsi</th>
             <th>Gambar</th>
             <th>Aksi</th>
@@ -75,6 +99,8 @@ if (isset($_POST['simpan'])) {
             <td>{$d['nama']}</td>
             <td>Rp " . number_format($d['harga'], 0, ',', '.') . "</td>
             <td>{$d['kategori']}</td>
+            <td>{$d['stock']}</td>
+            <td>{$d['sizes']}</td>
             <td>{$d['deskripsi']}</td>
             <td><img src='../uploads/{$d['gambar']}' width='80'></td>
             <td>

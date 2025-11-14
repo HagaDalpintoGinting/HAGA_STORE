@@ -9,6 +9,18 @@ function cart_count() {
   return $c;
 }
 
+// Wishlist count
+function wishlist_count($conn) {
+  if (empty($_SESSION['user_id'])) return 0;
+  $uid = (int)$_SESSION['user_id'];
+  $res = mysqli_query($conn, "SELECT COUNT(*) AS c FROM user_wishlist WHERE user_id=$uid");
+  if ($res) {
+    $row = mysqli_fetch_assoc($res);
+    return (int)($row['c'] ?? 0);
+  }
+  return 0;
+}
+
 // Handle add to cart / buy now
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   $action = $_POST['action'] ?? '';
@@ -87,50 +99,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       border-color: #ff3c00;
     }
 
-    .produk-card {
-      background-color: #1e1e1e;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      transition: all 0.3s ease;
+    /* Product tile - marketplace style */
+    .product-tile { background: #1e1e1e; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: transform .25s ease, box-shadow .25s ease; position: relative; }
+    .product-tile:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(255,60,0,0.20); }
+    .product-tile .thumb { height: 220px; object-fit: cover; width: 100%; display: block; }
+    .discount-badge { position:absolute; top:10px; left:10px; background:#ff3c00; color:#fff; font-weight:700; font-size:.8rem; padding:4px 8px; border-radius:6px; }
+    .cashback-badge { position:absolute; top:10px; left:60px; background:rgba(255,255,255,0.12); color:#ffd5c8; font-size:.75rem; padding:3px 6px; border-radius:6px; border:1px solid rgba(255,255,255,0.15); }
+    .product-body { padding:12px 14px; display:flex; flex-direction:column; gap:6px; }
+    .product-title {
+      color:#fff; font-weight:600; line-height:1.25;
+      /* Multi-line clamp */
+      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient: vertical;
+      /* Fallbacks */
+      overflow:hidden; text-overflow: ellipsis; max-height:2.5em; /* 2 lines x 1.25 */
+      line-clamp: 2; /* non-prefixed (progressive) */
+      min-height:2.5em;
     }
-
-    .produk-card:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 12px 30px rgba(255,60,0,0.2);
-    }
-
-    .produk-card img {
-      height: 220px;
-      object-fit: cover;
-    }
-
-    .produk-card .card-title {
-      font-family: 'Anton', sans-serif;
-      font-size: 1.3rem;
-      color: #fff;
-    }
-
-    .produk-card .card-text {
-      color: #ccc;
-    }
-
-      .produk-badge {
-      ::-webkit-input-placeholder { color: #fff !important; opacity: 1; }
-      :-moz-placeholder { color: #fff !important; opacity: 1; }
-      ::-moz-placeholder { color: #fff !important; opacity: 1; }
-      :-ms-input-placeholder { color: #fff !important; opacity: 1; }
-      input[type="search"]::placeholder { color: #fff !important; opacity: 1; }
-      font-size: 0.8rem;
-      background-color: #ff3c00;
-      color: white;
-      padding: 4px 12px;
-      border-radius: 20px;
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      font-weight: bold;
-    }
+    .product-price { color:#fff; font-weight:700; }
+    .product-meta { color:#ddd; font-size:.85rem; display:flex; align-items:center; gap:10px; }
+    .product-meta .dot { width:4px; height:4px; border-radius:50%; background:#777; display:inline-block; }
+    .product-loc { color:#bbb; font-size:.85rem; }
 
     footer {
       margin-top: 60px;
@@ -138,7 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       background-color: #1a1a1a;
       color: #aaa;
       text-align: center;
-      border-top: 2px solid #333;
+      border-top: 2px solid #333; 
       font-size: 0.9rem;
     }
 
@@ -202,6 +190,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem;"><?= cart_count() ?></span>
         </a>
 
+        <!-- Wishlist link -->
+        <a href="wishlist.php" class="btn btn-link text-light position-relative me-2">
+          <i class="bi bi-heart" style="font-size:1.5rem;"></i>
+          <?php $wcount = wishlist_count($conn); if ($wcount > 0): ?>
+          <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.8rem;"><?= $wcount ?></span>
+          <?php endif; ?>
+        </a>
+
         <?php if (isset($_SESSION['user_id'])): ?>
           <!-- Dropdown Profile saat sudah login -->
           <div class="dropdown">
@@ -211,6 +207,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
               <li><h6 class="dropdown-header">Hi, <?= htmlspecialchars($_SESSION['user_name'] ?? 'User') ?></h6></li>
+              <li><a class="dropdown-item" href="orders.php">Orders</a></li>
+              <li><a class="dropdown-item" href="wishlist.php">Wishlist</a></li>
               <li><a class="dropdown-item" href="profile.php">Profile</a></li>
               <li><a class="dropdown-item" href="#">Settings</a></li>
               <li><hr class="dropdown-divider"></li>
@@ -252,26 +250,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       while ($d = mysqli_fetch_assoc($data)) {
         echo '
         <div class="col-md-4 mb-4">
-          <div class="card produk-card position-relative h-100 d-flex flex-column">
-            <span class="produk-badge">🔥 Best Seller</span>
+          <div class="product-tile h-100">
+            <span class="discount-badge">35%</span>
             <a href="detail.php?id='.$d['id'].'" style="text-decoration:none; color:inherit;">
-              <img src="../uploads/'.$d['gambar'].'" class="card-img-top" alt="'.htmlspecialchars($d['nama']).'">
+              <img src="../uploads/'.$d['gambar'].'" class="thumb" alt="'.htmlspecialchars($d['nama']).'">
             </a>
-            <div class="card-body d-flex flex-column">
-              <h5 class="card-title">'.htmlspecialchars($d['nama']).'</h5>
-              <p class="card-text mb-3">Rp '.number_format($d['harga'],0,',','.').'</p>
-              <div class="mt-auto d-flex gap-2">
-                <form method="POST" class="flex-grow-1">
-                  <input type="hidden" name="action" value="add_to_cart">
-                  <input type="hidden" name="product_id" value="'.$d['id'].'">
-                  <button type="submit" class="btn btn-outline-light w-100">Tambahkan</button>
-                </form>
-                <form method="POST" class="flex-grow-1">
-                  <input type="hidden" name="action" value="buy_now">
-                  <input type="hidden" name="product_id" value="'.$d['id'].'">
-                  <button type="submit" class="btn" style="background-color:#ff3c00; color:#fff; border:0; width:100%">Beli Sekarang</button>
-                </form>
+            <div class="product-body">
+              <div class="product-title">'.htmlspecialchars($d['nama']).'</div>
+              <div class="product-price">Rp '.number_format($d['harga'],0,',','.').'</div>
+              <div class="product-meta">
+                <span><i class="bi bi-star-fill text-warning"></i> 5.0</span>
+                <span class="dot"></span>
+                <span>500+ terjual</span>
               </div>
+              <div class="product-loc"><i class="bi bi-geo-alt"></i> Kota Jakarta</div>
             </div>
           </div>
         </div>';

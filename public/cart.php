@@ -52,15 +52,33 @@ if (!empty($_SESSION['cart'])) {
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="theme.css" rel="stylesheet">
   <style>
-    body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #eee; }
+    body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
     .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
     .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
     .form-control.bg-glass { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
     .form-control.bg-glass:focus { background: transparent; color: #fff; border-color: #ff3c00; box-shadow: 0 0 0 .25rem rgba(255,60,0,.15); }
+    .form-control.bg-glass::placeholder { color: rgba(255,255,255,0.85); opacity: 1; }
     .btn-theme { background-color: #ff3c00; color: #fff; border: 0; }
     .btn-theme:hover { background-color: #ff521f; color: #fff; }
     a.link-light-orange { color: #ff7a52; text-decoration: none; }
     a.link-light-orange:hover { color: #ffa284; }
+
+    /* Table glass theme */
+    .table-glass {
+      --bs-table-bg: transparent;
+      --bs-table-color: #ffffff;
+      --bs-table-striped-color: #ffffff;
+      --bs-table-hover-color: #ffffff;
+      color:#fff;
+    }
+    .table-glass thead th { background-color: rgba(255,255,255,0.06); color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .table-glass tbody tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .table-glass tbody tr:hover { background-color: rgba(255,60,0,0.06); }
+    .table-glass td, .table-glass th { padding: .9rem .8rem; vertical-align: middle; }
+    .price { color:#ffffff !important; font-weight:600; }
+    .subtotal { color:#ffffff !important; font-weight:600; }
+    .product-name { color:#ffffff; }
+    footer { background: transparent !important; box-shadow: none !important; }
   </style>
 </head>
 <body>
@@ -77,11 +95,11 @@ if (!empty($_SESSION['cart'])) {
           <?php if ($err): ?><div class="alert alert-danger py-2"><?= htmlspecialchars($err) ?></div><?php endif; ?>
 
           <?php if (empty($items)): ?>
-            <div class="text-secondary">Keranjang Anda kosong.</div>
+            <div class="text-light">Keranjang Anda kosong.</div>
             <div class="mt-3"><a class="link-light-orange" href="index.php"><i class="bi bi-arrow-left"></i> Belanja sekarang</a></div>
           <?php else: ?>
             <div class="table-responsive">
-              <table class="table table-dark align-middle">
+              <table class="table table-borderless table-glass align-middle">
                 <thead>
                   <tr>
                     <th>Produk</th>
@@ -97,10 +115,10 @@ if (!empty($_SESSION['cart'])) {
                       <td>
                         <div class="d-flex align-items-center gap-2">
                           <img src="../uploads/<?= htmlspecialchars($it['gambar']) ?>" alt="" style="width:56px;height:56px;object-fit:cover;border-radius:8px;">
-                          <div><?= htmlspecialchars($it['nama']) ?></div>
+                          <div class="product-name"><?= htmlspecialchars($it['nama']) ?></div>
                         </div>
                       </td>
-                      <td>Rp <?= number_format($it['harga'],0,',','.') ?></td>
+                      <td class="price">Rp <?= number_format($it['harga'],0,',','.') ?></td>
                       <td>
                         <form method="POST" class="d-flex gap-2">
                           <input type="hidden" name="action" value="update_qty">
@@ -109,7 +127,7 @@ if (!empty($_SESSION['cart'])) {
                           <button class="btn btn-sm btn-outline-light" type="submit">Ubah</button>
                         </form>
                       </td>
-                      <td>Rp <?= number_format($it['subtotal'],0,',','.') ?></td>
+                      <td class="subtotal">Rp <?= number_format($it['subtotal'],0,',','.') ?></td>
                       <td>
                         <form method="POST" onsubmit="return confirm('Hapus item ini?');">
                           <input type="hidden" name="action" value="remove">
@@ -131,7 +149,7 @@ if (!empty($_SESSION['cart'])) {
             </div>
             <div class="text-end mt-3">
               <a href="index.php" class="btn btn-outline-light me-2">Lanjut Belanja</a>
-              <button class="btn btn-theme">Lanjut Pembayaran</button>
+              <a href="checkout.php" class="btn btn-theme">Lanjut Pembayaran</a>
             </div>
           <?php endif; ?>
         </div>
