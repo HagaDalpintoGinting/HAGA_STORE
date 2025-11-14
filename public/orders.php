@@ -84,58 +84,74 @@ function rupiah($n){ return 'Rp '.number_format((int)$n,0,',','.'); }
             ];
             $badge = $map[$status] ?? 'secondary';
           ?>
-          <div class="border rounded-3 p-3 mb-3" style="border-color: rgba(255,255,255,0.12) !important; background: rgba(0,0,0,0.15);">
-            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div class="border rounded-3 p-3 mb-4 order-history-block" style="border-color: rgba(255,255,255,0.18) !important; background: rgba(0,0,0,0.18);">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 mb-2">
               <div>
-                <div class="fw-semibold">Order #<?= $oid ?></div>
-                <div class="text-white-50 small">Tanggal: <?= htmlspecialchars($o['created_at']) ?></div>
+                <div class="fw-bold h5 mb-1">Order <span class="text-theme">#<?= $oid ?></span></div>
+                <div class="small text-white-50">Tanggal: <span class="fw-semibold text-light"><?= htmlspecialchars($o['created_at']) ?></span></div>
               </div>
               <div class="d-flex align-items-center gap-2">
-                <span class="badge bg-<?= $badge ?> text-uppercase" style="letter-spacing:.3px;">&nbsp;<?= htmlspecialchars($o['status']) ?>&nbsp;</span>
-                <div class="fw-bold">Total: <?= rupiah($o['total'] ?? 0) ?></div>
+                <span class="badge bg-<?= $badge ?> text-uppercase px-3 py-2" style="font-size:1rem; letter-spacing:.3px; font-weight:600;">
+                  <?= strtoupper(htmlspecialchars($o['status'])) ?>
+                </span>
+                <div class="fw-bold h5 m-0">Total: <span class="text-theme"><?= rupiah($o['total'] ?? 0) ?></span></div>
               </div>
             </div>
+            <div class="mb-2">
+              <span class="fw-semibold text-white-50">Detail Produk:</span>
+            </div>
+            <div class="table-responsive mb-2">
+              <table class="table table-bordered align-middle m-0 order-table-custom">
+                <thead>
+                  <tr>
+                    <th class="fw-semibold">Produk</th>
+                    <th class="fw-semibold">Harga</th>
+                    <th class="fw-semibold">Qty</th>
+                    <th class="fw-semibold text-end">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php while ($it = mysqli_fetch_assoc($items)): ?>
+                    <tr>
+                      <td><?= htmlspecialchars($it['nama']) ?></td>
+                      <td><?= rupiah($it['harga']) ?></td>
+                      <td class="text-center"><?= (int)$it['qty'] ?></td>
+                      <td class="text-end fw-bold"><?= rupiah($it['subtotal']) ?></td>
+                    </tr>
+                  <?php endwhile; ?>
+                </tbody>
+              </table>
+            </div>
+            <style>
+              .order-table-custom {
+                background: transparent !important;
+              }
+              .order-table-custom th, .order-table-custom td {
+                color: #fff !important;
+                background: transparent !important;
+              }
+              .order-table-custom thead {
+                background: rgba(44,10,5,0.7) !important;
+              }
+            </style>
             <?php if (!in_array($status, ['completed','cancelled'])): ?>
-              <div class="d-flex gap-2 mt-2">
+              <div class="d-flex gap-2 mt-3">
                 <?php if (in_array($status, ['shipped','paid'])): ?>
                 <form method="POST" class="form-terima-pesanan">
                   <input type="hidden" name="order_id" value="<?= $oid ?>">
                   <input type="hidden" name="action" value="accept">
-                  <button class="btn btn-sm btn-theme">Terima Pesanan</button>
+                  <button class="btn btn-sm btn-theme"><i class="bi bi-check-circle me-1"></i>Terima Pesanan</button>
                 </form>
                 <?php endif; ?>
                 <?php if (in_array($status, ['pending','paid'])): ?>
                 <form method="POST" class="form-batal-pesanan">
                   <input type="hidden" name="order_id" value="<?= $oid ?>">
                   <input type="hidden" name="action" value="cancel">
-                  <button class="btn btn-sm btn-outline-theme">Batalkan Pesanan</button>
+                  <button class="btn btn-sm btn-outline-theme"><i class="bi bi-x-circle me-1"></i>Batalkan Pesanan</button>
                 </form>
                 <?php endif; ?>
               </div>
             <?php endif; ?>
-            <hr class="border-0" style="border-top:1px solid rgba(255,255,255,0.1)!important; opacity:1;">
-            <div class="table-responsive mt-2">
-              <table class="table table-sm table-borderless align-middle m-0" style="color:#e9e9e9;">
-                <thead>
-                  <tr>
-                    <th class="text-white-50 fw-semibold">Produk</th>
-                    <th class="text-white-50 fw-semibold">Harga</th>
-                    <th class="text-white-50 fw-semibold">Qty</th>
-                    <th class="text-white-50 fw-semibold text-end">Subtotal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <?php while ($it = mysqli_fetch_assoc($items)): ?>
-                    <tr>
-                      <td class="text-white"><?= htmlspecialchars($it['nama']) ?></td>
-                      <td class="text-white"><?= rupiah($it['harga']) ?></td>
-                      <td class="text-white"><?= (int)$it['qty'] ?></td>
-                      <td class="text-white text-end"><?= rupiah($it['subtotal']) ?></td>
-                    </tr>
-                  <?php endwhile; ?>
-                </tbody>
-              </table>
-            </div>
           </div>
         <?php endforeach; ?>
       <?php endif; ?>

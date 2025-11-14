@@ -52,7 +52,8 @@ CREATE TABLE `produk` (
   `harga` int(11) NOT NULL,
   `gambar` varchar(255) DEFAULT NULL,
   `deskripsi` text DEFAULT NULL,
-  `kategori` varchar(50) DEFAULT NULL
+  `kategori` varchar(50) DEFAULT NULL,
+  `diskon` int(3) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

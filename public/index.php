@@ -197,9 +197,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <?php if (isset($_SESSION['user_id'])): ?>
           <!-- Dropdown Profile saat sudah login -->
+          <?php
+            // Get avatar filename from database
+            $avatarPath = '';
+            $uid = (int)$_SESSION['user_id'];
+            $avatarFile = '';
+            $stmt = mysqli_prepare($conn, 'SELECT avatar FROM users WHERE id = ? LIMIT 1');
+            if ($stmt) {
+              mysqli_stmt_bind_param($stmt, 'i', $uid);
+              mysqli_stmt_execute($stmt);
+              mysqli_stmt_bind_result($stmt, $avatarFile);
+              if (mysqli_stmt_fetch($stmt) && $avatarFile && file_exists(__DIR__ . '/../uploads/avatars/' . $avatarFile)) {
+                $avatarPath = '../uploads/avatars/' . htmlspecialchars($avatarFile);
+              }
+              mysqli_stmt_close($stmt);
+            }
+            if (!$avatarPath) {
+              // SVG fallback
+              $avatarPath = 'data:image/svg+xml;utf8,' . rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40"><defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#2c0a05"/><stop offset="100%" stop-color="#1a1a1a"/></linearGradient></defs><rect width="40" height="40" rx="8" fill="url(#g)"/><circle cx="20" cy="15" r="10" fill="#444" stroke="#666" stroke-width="2"/><rect x="8" y="26" width="24" height="10" rx="5" fill="#444" stroke="#666" stroke-width="2"/></svg>');
+            }
+          ?>
           <div class="dropdown">
             <a href="#" class="btn btn-link text-light dropdown-toggle d-flex align-items-center" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              <i class="bi bi-person-circle" style="font-size:1.5rem"></i>
+              <img src="<?= $avatarPath ?>" alt="Avatar" class="rounded-circle me-1" style="width:32px;height:32px;object-fit:cover;border:1.5px solid #ff3c00;">
               <span class="ms-1 d-none d-sm-inline"><?= htmlspecialchars($_SESSION['user_name'] ?? 'Akun') ?></span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
@@ -245,16 +265,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               : mysqli_query($conn, "SELECT * FROM produk");
 
       while ($d = mysqli_fetch_assoc($data)) {
+        $diskon = (int)($d['diskon'] ?? 0);
+        $harga = (int)($d['harga'] ?? 0);
+        $hargaDiskon = $diskon > 0 ? round($harga * (100 - $diskon) / 100) : $harga;
         echo '
         <div class="col-md-4 mb-4">
           <div class="product-tile h-100">
-            <span class="discount-badge">35%</span>
+            '.($diskon > 0 ? '<span class="discount-badge">'.$diskon.'% OFF</span>' : '').'
             <a href="detail.php?id='.$d['id'].'" style="text-decoration:none; color:inherit;">
               <img src="../uploads/'.$d['gambar'].'" class="thumb" alt="'.htmlspecialchars($d['nama']).'">
             </a>
             <div class="product-body">
               <div class="product-title">'.htmlspecialchars($d['nama']).'</div>
-              <div class="product-price">Rp '.number_format($d['harga'],0,',','.').'</div>
+              <div class="product-price">'.
+                ($diskon > 0 ? '<span style="text-decoration:line-through;color:#ff7a52;font-size:1rem;">Rp '.number_format($harga,0,',','.').'</span> <span style="color:#fff;font-weight:700;font-size:1.2rem;">Rp '.number_format($hargaDiskon,0,',','.').'</span>'
+                : 'Rp '.number_format($harga,0,',','.')).
+              '</div>
               <div class="product-meta">
                 <span><i class="bi bi-star-fill text-warning"></i> 5.0</span>
                 <span class="dot"></span>

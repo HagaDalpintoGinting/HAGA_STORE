@@ -356,7 +356,6 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
                   </div>
                 </div>
                 <div class="d-flex justify-content-between align-items-center mt-4">
-                  <a class="link-light-orange" href="index.php"><i class="bi bi-arrow-left"></i> Kembali</a>
                   <button type="submit" class="btn btn-theme">Simpan Perubahan</button>
                 </div>
               </form>

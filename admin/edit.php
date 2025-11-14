@@ -21,7 +21,7 @@ if (isset($_POST['update'])) {
     $kategori = $_POST['kategori'];
     $stock = (int)($_POST['stock'] ?? 0);
     $sizes = trim($_POST['sizes'] ?? '');
-
+    $diskon = (int)($_POST['diskon'] ?? 0);
     if ($_FILES['gambar']['name']) {
         $gambar = $_FILES['gambar']['name'];
         $tmp = $_FILES['gambar']['tmp_name'];
@@ -33,7 +33,8 @@ if (isset($_POST['update'])) {
           sizes='".mysqli_real_escape_string($conn,$sizes)."', 
           deskripsi='$deskripsi', 
           kategori='$kategori', 
-          gambar='$gambar' 
+          gambar='$gambar', 
+          diskon='$diskon' 
           WHERE id=$id");
     } else {
         mysqli_query($conn, "UPDATE produk SET 
@@ -42,7 +43,8 @@ if (isset($_POST['update'])) {
           stock='$stock', 
           sizes='".mysqli_real_escape_string($conn,$sizes)."', 
           deskripsi='$deskripsi', 
-          kategori='$kategori' 
+          kategori='$kategori', 
+          diskon='$diskon' 
           WHERE id=$id");
     }
 
@@ -88,6 +90,10 @@ if (isset($_POST['update'])) {
           <div class="mb-3">
             <label class="form-label">Harga</label>
             <input type="number" name="harga" value="<?= $p['harga'] ?>" class="form-control" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Diskon (%)</label>
+            <input type="number" name="diskon" value="<?= (int)($p['diskon'] ?? 0) ?>" class="form-control" min="0" max="100" placeholder="0">
           </div>
           <div class="row g-3 mb-3">
             <div class="col-md-6">

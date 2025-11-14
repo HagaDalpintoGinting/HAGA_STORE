@@ -14,14 +14,14 @@ if (isset($_POST['simpan'])) {
     $kategori = mysqli_real_escape_string($conn, $_POST['kategori']);
     $gambar = $_FILES['gambar']['name'];
     $tmp = $_FILES['gambar']['tmp_name'];
-
     $stock = (int)($_POST['stock'] ?? 0);
     $sizes = trim($_POST['sizes'] ?? 'M,L,XL,XXL');
+    $diskon = (int)($_POST['diskon'] ?? 0);
     if ($gambar != '') {
       $safe_gambar = time().'_'.preg_replace('/[^a-zA-Z0-9_.-]/','',$gambar);
       move_uploaded_file($tmp, "../uploads/" . $safe_gambar);
-      mysqli_query($conn, "INSERT INTO produk (nama, harga, stock, sizes, gambar, deskripsi, kategori)
-                 VALUES ('$nama','$harga','$stock','".mysqli_real_escape_string($conn,$sizes)."','$safe_gambar','$deskripsi','$kategori')");
+      mysqli_query($conn, "INSERT INTO produk (nama, harga, stock, sizes, gambar, deskripsi, kategori, diskon)
+                 VALUES ('$nama','$harga','$stock','".mysqli_real_escape_string($conn,$sizes)."','$safe_gambar','$deskripsi','$kategori','$diskon')");
 
       $pid = mysqli_insert_id($conn);
       if (!empty($_FILES['galeri']['name'][0])) {
@@ -68,10 +68,16 @@ if (isset($_POST['simpan'])) {
                     <input type="text" name="nama" class="form-control" placeholder="Nama produk" required>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-3">
                 <div class="mb-3">
                     <label class="form-label">Harga</label>
                     <input type="number" name="harga" class="form-control" placeholder="Harga" required>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="mb-3">
+                    <label class="form-label">Diskon (%)</label>
+                    <input type="number" name="diskon" class="form-control" placeholder="0" min="0" max="100">
                 </div>
             </div>
         </div>
