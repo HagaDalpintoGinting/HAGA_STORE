@@ -232,18 +232,15 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
     .form-control.bg-glass:focus { background: transparent; color: #fff; border-color: #ff3c00; box-shadow: 0 0 0 .25rem rgba(255,60,0,.15); }
     .form-control.bg-glass::placeholder { color: rgba(255,255,255,0.85); opacity: 1; }
     textarea.form-control.bg-glass::placeholder { color: rgba(255,255,255,0.85); }
-    /* Themed select to match dark glass style */
     .form-select.bg-glass {
       background-color: transparent;
       color: #fff;
       border: 1px solid rgba(255,255,255,0.2);
-      /* White chevron */
       --bs-form-select-bg-img: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='white' d='M3.204 5.096a.5.5 0 0 1 .707 0L8 9.185l4.09-4.09a.5.5 0 1 1 .707.707l-4.243 4.243a1 1 0 0 1-1.414 0L3.204 5.803a.5.5 0 0 1 0-.707z'/%3e%3c/svg%3e");
       background-image: var(--bs-form-select-bg-img), var(--bs-form-select-bg-icon, none);
     }
     .form-select.bg-glass:focus { background-color: transparent; color: #fff; border-color: #ff3c00; box-shadow: 0 0 0 .25rem rgba(255,60,0,.15); }
     .form-select.bg-glass option { background-color: #1e1e1e; color: #fff; }
-    /* Buttons use global theme.css */
     a.link-light-orange { color: #ff7a52; text-decoration: none; }
     a.link-light-orange:hover { color: #ffa284; }
     .nav-tabs .nav-link { color: #ddd; }
@@ -251,6 +248,27 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
     .list-tile { border-bottom: 1px solid rgba(255,255,255,0.08); padding: .6rem 0; display:flex; justify-content:space-between; gap:1rem; }
     .avatar { width: 160px; height: 160px; border-radius: 16px; object-fit: cover; border: 1px solid rgba(255,255,255,0.1); }
     .badge-verified { background: #1f8f4a; }
+    @media (max-width: 991px) {
+      .container { padding-left: 10px; padding-right: 10px; }
+      .card-glass { border-radius: 12px; }
+      .avatar { width: 100px; height: 100px; border-radius: 12px; }
+      .nav-tabs .nav-link { font-size: 1rem; }
+    }
+    @media (max-width: 767px) {
+      .container { padding-left: 5px; padding-right: 5px; }
+      .card-glass { padding: 1rem; border-radius: 10px; }
+      .avatar { width: 64px; height: 64px; border-radius: 8px; }
+      .nav-tabs .nav-link { font-size: 0.95rem; }
+      .form-control, .btn { font-size: 1rem; }
+      .row > .col-md-6, .row > .col-md-4 { flex: 0 0 100%; max-width: 100%; margin-bottom: 1rem; }
+      .list-tile { flex-direction: column; gap: 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .container { padding-left: 2px; padding-right: 2px; }
+      .card-glass { padding: 0.5rem; }
+      .avatar { width: 40px; height: 40px; border-radius: 6px; }
+      .nav-tabs .nav-link { font-size: 0.9rem; }
+    }
   </style>
 </head>
 <body style="padding-top: 2rem; padding-bottom: 2rem;">

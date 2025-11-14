@@ -52,10 +52,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="theme.css?v=1763094445" rel="stylesheet">
   <style>
     body {
-  background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
-  font-family: 'Quicksand', sans-serif;
-  color: #eee;
-}
+      background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
+      font-family: 'Quicksand', sans-serif;
+      color: #eee;
+    }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 991px) {
+      .container { padding-left: 10px; padding-right: 10px; }
+      .hero-section { padding: 40px; border-radius: 14px; margin-bottom: 18px; margin-top: 18px; }
+      .navbar-brand { font-size: 1.2rem; }
+      .search-bar-themed { width: 100% !important; }
+      .row > .col-md-4 { flex: 0 0 50%; max-width: 50%; }
+    }
+    @media (max-width: 767px) {
+      .container { padding-left: 5px; padding-right: 5px; }
+      .hero-section { padding: 18px; border-radius: 10px; margin-bottom: 10px; margin-top: 10px; }
+      .navbar-brand { font-size: 1rem; }
+      .search-bar-themed { width: 100% !important; }
+      .row { gap: 0.5rem 0; }
+      .row > .col-md-4 { flex: 0 0 100%; max-width: 100%; margin-bottom: 1rem; }
+      .product-tile { border-radius: 10px; }
+      .product-tile .thumb { height: 120px; }
+      .product-title { font-size: 1rem; min-height: 2em; }
+      .product-price { font-size: 1rem; }
+      .product-meta, .product-loc { font-size: 0.85rem; }
+      .kategori-bar .btn { font-size: 0.95rem; padding: 7px 12px; }
+      .dropdown-menu { font-size: 0.95rem; }
+      footer { padding: 12px; font-size: 0.85rem; }
+    }
+    @media (max-width: 480px) {
+      .container { padding-left: 2px; padding-right: 2px; }
+      .hero-section { padding: 8px; border-radius: 7px; }
+      .row > .col-md-4 { margin-bottom: 0.7rem; }
+      .product-tile .thumb { height: 80px; }
+      .product-title { font-size: 0.92rem; }
+      .product-price { font-size: 0.95rem; }
+      .navbar-brand { font-size: 0.95rem; }
+      .dropdown-menu { font-size: 0.9rem; }
+      footer { padding: 6px; font-size: 0.8rem; }
+    }
     .judul {
       font-family: 'Anton', sans-serif;
       font-size: 3.5rem;
@@ -65,7 +103,59 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       letter-spacing: 1px;
       text-shadow: 1px 1px 3px #000;
     }
-
+    @media (max-width: 576px) {
+      .judul {
+        font-size: 2rem;
+        margin-top: 20px;
+      }
+      .subjudul {
+        font-size: 0.95rem;
+        margin-bottom: 20px;
+      }
+      .kategori-bar .btn {
+        padding: 7px 12px;
+        font-size: 0.95rem;
+      }
+      .product-tile .thumb {
+        height: 140px;
+      }
+      .product-body {
+        padding: 8px 7px;
+      }
+      .product-title {
+        font-size: 1rem;
+        min-height: 2em;
+      }
+      .product-price {
+        font-size: 1rem;
+      }
+      .product-meta, .product-loc {
+        font-size: 0.8rem;
+      }
+      .container {
+        padding-left: 5px;
+        padding-right: 5px;
+      }
+      .hero-section {
+        padding: 30px;
+        margin-bottom: 15px;
+        margin-top: 15px;
+      }
+      .navbar-brand {
+        font-size: 1.1rem;
+      }
+      .dropdown-menu {
+        font-size: 0.95rem;
+      }
+    }
+    @media (max-width: 400px) {
+      .product-tile .thumb {
+        height: 100px;
+      }
+      .product-title {
+        font-size: 0.9rem;
+      }
+    }
     .subjudul {
       font-size: 1.1rem;
       text-align: center;
@@ -173,7 +263,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <!-- Searchbar tengah -->
       <form class="d-flex mx-auto w-50 search-bar-themed" method="GET" action="index.php">
         <div class="input-group">
-          <input class="form-control" type="search" name="q" placeholder="Search products..." aria-label="Search">
+          <input class="form-control" type="search" name="q" placeholder="Search products..." aria-label="Search" value="<?= htmlspecialchars($_GET['q'] ?? '') ?>">
+          <?php if (isset($_GET['kategori'])): ?>
+            <input type="hidden" name="kategori" value="<?= htmlspecialchars($_GET['kategori']) ?>">
+          <?php endif; ?>
           <button class="btn" type="submit">
             <i class="bi bi-search"></i>
           </button>
@@ -260,9 +353,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="row">
       <?php
       $kategori = $_GET['kategori'] ?? '';
-      $data = $kategori 
-              ? mysqli_query($conn, "SELECT * FROM produk WHERE kategori='$kategori'")
-              : mysqli_query($conn, "SELECT * FROM produk");
+      $q = trim($_GET['q'] ?? '');
+      $sql = "SELECT * FROM produk";
+      $where = [];
+      if ($kategori) {
+        $where[] = "kategori='" . mysqli_real_escape_string($conn, $kategori) . "'";
+      }
+      if ($q !== '') {
+        $qEsc = mysqli_real_escape_string($conn, $q);
+        $where[] = "(nama LIKE '%$qEsc%' OR kategori LIKE '%$qEsc%')";
+      }
+      if ($where) {
+        $sql .= " WHERE " . implode(' AND ', $where);
+      }
+      $data = mysqli_query($conn, $sql);
 
       while ($d = mysqli_fetch_assoc($data)) {
         $diskon = (int)($d['diskon'] ?? 0);

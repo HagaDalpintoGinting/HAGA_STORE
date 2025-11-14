@@ -41,6 +41,27 @@ while($row = mysqli_fetch_assoc($res)) { $items[] = $row; }
     }
     .product-price { color:#fff; font-weight:700; }
     .product-footer { padding: 0 14px 12px; margin-top: auto; }
+      @media (max-width: 991px) {
+        .col-lg-3 { flex: 0 0 50%; max-width: 50%; }
+      }
+      @media (max-width: 767px) {
+        .container { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .card-glass { padding: 1rem; border-radius: 12px; }
+        .row.g-4 { gap: 1rem 0.5rem; }
+        .col-lg-3, .col-md-4, .col-sm-6 { flex: 0 0 100%; max-width: 100%; }
+        .product-tile { border-radius: 10px; }
+        .product-tile .thumb { height: 160px; }
+        .product-title { font-size: 1rem; min-height: 2em; }
+        .brand-title { font-size: 1.2rem; }
+        .btn, .form-control { font-size: 1rem; }
+        .product-footer { padding: 0 8px 8px; }
+      }
+      @media (max-width: 480px) {
+        .brand-title { font-size: 1rem; }
+        .card-glass { padding: 0.5rem; }
+        .product-tile .thumb { height: 120px; }
+        .product-title { font-size: 0.95rem; }
+      }
   </style>
 </head>
 <body style="padding-top: 2rem; padding-bottom: 2rem;">

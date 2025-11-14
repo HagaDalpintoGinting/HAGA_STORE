@@ -78,6 +78,25 @@ if (!empty($_SESSION['cart'])) {
     .subtotal { color:#ffffff !important; font-weight:600; }
     .product-name { color:#ffffff; }
     footer { background: transparent !important; box-shadow: none !important; }
+      @media (max-width: 991px) {
+        .container { padding-left: 10px; padding-right: 10px; }
+        .card-glass { border-radius: 12px; }
+        .table-responsive { overflow-x: auto; }
+      }
+      @media (max-width: 767px) {
+        .container { padding-left: 5px; padding-right: 5px; }
+        .card-glass { padding: 1rem; border-radius: 10px; }
+        .table-glass td, .table-glass th { font-size: 0.95rem; padding: 0.5rem; }
+        .brand-title { font-size: 1.2rem; }
+        .btn, .form-control { font-size: 1rem; }
+        .table-responsive { overflow-x: auto; }
+      }
+      @media (max-width: 480px) {
+        .container { padding-left: 2px; padding-right: 2px; }
+        .card-glass { padding: 0.5rem; }
+        .table-glass td, .table-glass th { font-size: 0.9rem; padding: 0.35rem; }
+        .brand-title { font-size: 1rem; }
+      }
   </style>
 </head>
 <body style="padding-top: 2rem; padding-bottom: 2rem;">
