@@ -224,9 +224,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     input[type="search"]::placeholder { color: #fff !important; opacity: 1; }
 
     .dropdown-menu {
-      background-color: #1e1e1e;
-      border: 1px solid #555;
-      border-radius: 10px;
+      background: linear-gradient(135deg, rgba(26,26,26,0.98) 0%, rgba(44,10,5,0.98) 100%);
+      border: 1.5px solid #ff3c00;
+      border-radius: 16px;
+      box-shadow: 0 8px 32px rgba(255,60,0,0.10);
+      color: #fff;
+      padding: 0.5rem 0;
+      min-width: 180px;
+      overflow: hidden;
+    }
+    .dropdown-menu .dropdown-header {
+      color: #ff3c00;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.05rem;
+      letter-spacing: 1px;
+      padding-bottom: 0.25rem;
+      border-bottom: 1px solid rgba(255,60,0,0.15);
+      margin-bottom: 0.25rem;
+    }
+    .dropdown-menu .dropdown-item {
+      color: #fff;
+      font-weight: 500;
+      border-radius: 8px;
+      padding: 8px 16px;
+      transition: background 0.18s, color 0.18s;
+      display: block;
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .dropdown-menu .dropdown-item:hover, .dropdown-menu .dropdown-item:focus {
+      background: rgba(255,60,0,0.18);
+      color: #ff3c00;
+    }
+    .dropdown-menu .dropdown-divider {
+      border-top: 1.5px solid #ff3c00;
     }
 
     .dropdown-item {
@@ -295,15 +326,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $avatarPath = '';
             $uid = (int)$_SESSION['user_id'];
             $avatarFile = '';
-            $stmt = mysqli_prepare($conn, 'SELECT avatar FROM users WHERE id = ? LIMIT 1');
-            if ($stmt) {
-              mysqli_stmt_bind_param($stmt, 'i', $uid);
-              mysqli_stmt_execute($stmt);
-              mysqli_stmt_bind_result($stmt, $avatarFile);
-              if (mysqli_stmt_fetch($stmt) && $avatarFile && file_exists(__DIR__ . '/../uploads/avatars/' . $avatarFile)) {
-                $avatarPath = '../uploads/avatars/' . htmlspecialchars($avatarFile);
+            if ($conn && is_object($conn) && get_class($conn) === 'mysqli') {
+              $stmt = mysqli_prepare($conn, 'SELECT avatar FROM users WHERE id = ? LIMIT 1');
+              if ($stmt) {
+                mysqli_stmt_bind_param($stmt, 'i', $uid);
+                mysqli_stmt_execute($stmt);
+                mysqli_stmt_bind_result($stmt, $avatarFile);
+                if (mysqli_stmt_fetch($stmt) && $avatarFile && file_exists(__DIR__ . '/../uploads/avatars/' . $avatarFile)) {
+                  $avatarPath = '../uploads/avatars/' . htmlspecialchars($avatarFile);
+                }
+                mysqli_stmt_close($stmt);
               }
-              mysqli_stmt_close($stmt);
             }
             if (!$avatarPath) {
               // SVG fallback
@@ -320,7 +353,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
               <li><a class="dropdown-item" href="orders.php">Orders</a></li>
               <li><a class="dropdown-item" href="wishlist.php">Wishlist</a></li>
               <li><a class="dropdown-item" href="profile.php">Profile</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
               <li><hr class="dropdown-divider"></li>
               <li><a class="dropdown-item" href="logout.php">Logout</a></li>
             </ul>

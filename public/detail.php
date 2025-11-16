@@ -70,7 +70,44 @@ if (isset($_SESSION['user_id'])) {
     .size-btn.active, .size-btn:hover { border-color:#ff3c00; color:#fff; background: rgba(255,60,0,0.18); box-shadow: 0 0 0 .15rem rgba(255,60,0,.25); }
     .qty-btn { width:34px; height:34px; border:1px solid rgba(255,255,255,0.3); background:transparent; color:#fff; border-radius:8px; }
     .price, .subtotal { color:#fff; font-weight:700; }
-    .tab-content { color:#fff; }
+    .nav-tabs {
+      border-bottom: 2px solid #ff3c00;
+      background: transparent;
+      border-radius: 12px 12px 0 0;
+      overflow: hidden;
+    }
+    .nav-tabs .nav-link {
+      color: #fff;
+      background: transparent;
+      border: none;
+      font-weight: 600;
+      border-radius: 8px 8px 0 0;
+      margin-right: 8px;
+      padding: 10px 22px;
+      transition: background 0.18s, color 0.18s;
+    }
+    .nav-tabs .nav-link.active {
+      color: #fff;  
+      transform: translateY(0);
+      background: linear-gradient(180deg, #e03800 0%, #d93300 100%);
+    }
+    .nav-tabs .nav-link:hover {
+      background: linear-gradient(180deg, #ff561f 0%, #e03800 100%);
+      color: var(--tt-white); 
+      border-color: #ff6a38; 
+      transform: translateY(-2px);
+      box-shadow: 
+        inset 0 1px 1px rgba(255, 255, 255, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 12px 24px rgba(255, 60, 0, 0.3);
+    }
+    .tab-content {
+      color: #fff;
+      background: transparent;
+      border-radius: 0 0 12px 12px;
+      padding-top: 1.5rem;
+      min-height: 80px;
+    }
 
     .qty-btn:hover, .qty-btn:focus { border-color:#ff3c00; box-shadow: 0 0 0 .12rem rgba(255,60,0,.18); }
   </style>
@@ -97,7 +134,23 @@ if (isset($_SESSION['user_id'])) {
       <div class="col-lg-6">
         <div class="card-glass p-3 p-md-4">
           <h1 class="h4 brand-title mb-2"><?= htmlspecialchars($p['nama']) ?></h1>
-          <div class="price h3">Rp <?= number_format($p['harga'],0,',','.') ?></div>
+          <?php
+            $diskon = isset($p['diskon']) ? (int)$p['diskon'] : 0;
+            $harga_awal = (int)$p['harga'];
+            $harga_diskon = $harga_awal;
+            if ($diskon > 0) {
+              $harga_diskon = $harga_awal - intval($harga_awal * $diskon / 100);
+            }
+          ?>
+          <div class="price h3">
+            <?php if ($diskon > 0): ?>
+              <span style="text-decoration:line-through;color:#bbb;font-size:1rem;">Rp <?= number_format($harga_awal,0,',','.') ?></span>
+              <span class="ms-2">Rp <?= number_format($harga_diskon,0,',','.') ?></span>
+              <span class="badge bg-danger ms-2">-<?= $diskon ?>%</span>
+            <?php else: ?>
+              Rp <?= number_format($harga_awal,0,',','.') ?>
+            <?php endif; ?>
+          </div>
           <div class="small text-white-50 mb-2">Terjual 500+ • <i class="bi bi-star-fill text-warning"></i> 5 (328 rating)</div>
 
           <div class="mb-3">
@@ -121,7 +174,7 @@ if (isset($_SESSION['user_id'])) {
 
           <div class="d-flex justify-content-between align-items-center mb-3">
             <div class="text-white-50">Subtotal</div>
-            <div class="subtotal h5 m-0" id="subtotal">Rp <?= number_format($p['harga'],0,',','.') ?></div>
+            <div class="subtotal h5 m-0" id="subtotal">Rp <?= number_format($harga_diskon,0,',','.') ?></div>
           </div>
 
           <div class="d-flex gap-2 mb-3">
@@ -132,7 +185,6 @@ if (isset($_SESSION['user_id'])) {
                 <i class="bi bi-heart<?= $isWish ? '-fill text-danger' : '' ?>"></i> Wishlist
               </button>
             </form>
-            <a href="#" class="btn btn-outline-theme btn-pill btn-icon-left" onclick="navigator.clipboard.writeText(window.location.href); return false;"><i class="bi bi-share"></i> Share</a>
           </div>
 
           <div class="d-flex gap-2">
@@ -181,7 +233,7 @@ if (isset($_SESSION['user_id'])) {
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   <script>
-    const price = <?= (int)$p['harga'] ?>;
+    const price = <?= (int)$harga_diskon ?>;
     const qtyInput = document.getElementById('qty');
     const subtotal = document.getElementById('subtotal');
     const formQty1 = document.getElementById('formQty1');

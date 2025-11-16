@@ -25,27 +25,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $regErr = 'Konfirmasi password tidak sama.';
   } else {
     $hash = password_hash($r_password, PASSWORD_DEFAULT);
-    if ($stmt = mysqli_prepare($conn, 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, "user")')) {
-      mysqli_stmt_bind_param($stmt, 'sss', $r_name, $r_email, $hash);
-      if (mysqli_stmt_execute($stmt)) {
-        $uid = mysqli_insert_id($conn);
-        // Auto-login after registration
-        $_SESSION['user_id'] = $uid;
-        $_SESSION['user_name'] = $r_name;
-        $_SESSION['user_email'] = $r_email;
-        $_SESSION['user_role'] = 'user';
-        header('Location: index.php');
-        exit;
-      } else {
-        if (mysqli_errno($conn) == 1062) {
-          $regErr = 'Email sudah terdaftar. Gunakan email lain atau login.';
+    try {
+      if ($stmt = mysqli_prepare($conn, 'INSERT INTO users (name, email, password, role) VALUES (?, ?, ?, "user")')) {
+        mysqli_stmt_bind_param($stmt, 'sss', $r_name, $r_email, $hash);
+        if (mysqli_stmt_execute($stmt)) {
+          $uid = mysqli_insert_id($conn);
+          // Auto-login after registration
+          $_SESSION['user_id'] = $uid;
+          $_SESSION['user_name'] = $r_name;
+          $_SESSION['user_email'] = $r_email;
+          $_SESSION['user_role'] = 'user';
+          header('Location: index.php');
+          exit;
         } else {
-          $regErr = 'Pendaftaran gagal. Coba lagi nanti.';
+          if (mysqli_errno($conn) == 1062) {
+            $regErr = 'Email sudah terdaftar. Gunakan email lain atau login.';
+          } else {
+            $regErr = 'Pendaftaran gagal. Coba lagi nanti.';
+          }
         }
+        mysqli_stmt_close($stmt);
+      } else {
+        $regErr = 'Terjadi kesalahan server saat mendaftar. Coba lagi nanti.';
       }
-      mysqli_stmt_close($stmt);
-    } else {
-      $regErr = 'Terjadi kesalahan server saat mendaftar. Coba lagi nanti.';
+    } catch (mysqli_sql_exception $e) {
+      if (strpos($e->getMessage(), 'Duplicate entry') !== false) {
+        $regErr = 'Email sudah terdaftar. Gunakan email lain atau login.';
+      } else {
+        $regErr = 'Pendaftaran gagal: ' . htmlspecialchars($e->getMessage());
+      }
     }
   }
 }
@@ -110,9 +118,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           </div>
 
           <?php if (!empty($regErr)): ?>
-            <div class="alert alert-danger py-2" role="alert">
-              <?= htmlspecialchars($regErr) ?>
-            </div>
+            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+            <script>
+              window.addEventListener('DOMContentLoaded', function() {
+                Swal.fire({
+                  icon: 'error',
+                  title: 'Gagal Daftar',
+                  text: <?= json_encode($regErr) ?>,
+                  confirmButtonColor: '#ff3c00',
+                  background: '#1e1e1e',
+                  color: '#fff',
+                });
+              });
+            </script>
           <?php endif; ?>
 
           <form method="POST" action="register.php" novalidate>
