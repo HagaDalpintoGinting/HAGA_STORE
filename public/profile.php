@@ -308,10 +308,8 @@ if (!$info) { $err = $err ?: 'Data profil tidak ditemukan.'; }
                     <label class="form-label">Jenis Kelamin</label>
                     <select class="form-select bg-glass" name="gender">
                       <?php $g = $info['gender'] ?? ''; ?>
-                      <option value="" <?= $g===''?'selected':'' ?>>Pilih</option>
                       <option value="male" <?= $g==='male'?'selected':'' ?>>Laki-laki</option>
                       <option value="female" <?= $g==='female'?'selected':'' ?>>Perempuan</option>
-                      <option value="other" <?= $g==='other'?'selected':'' ?>>Lainnya</option>
                     </select>
                   </div>
                   <div class="col-md-6">
