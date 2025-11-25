@@ -1,0 +1,10 @@
+# Ignore uploaded files (user content)
+/uploads/
+
+# Ignore local admin config containing database credentials
+/admin/config.php
+
+# Ignore IDE/editor project files
+.vscode/
+Thumbs.db
+desktop.ini
