@@ -60,57 +60,7 @@ if (isset($_SESSION['user_id'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="theme.css?v=1763094445" rel="stylesheet">
-  <style>
-    body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
-    .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
-    .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
-    .thumbs img { width:64px; height:64px; object-fit:cover; border-radius:8px; cursor:pointer; border:2px solid transparent; }
-    .thumbs img.active { border-color:#ff3c00; }
-    .size-btn { border:1.5px solid rgba(255,255,255,0.35); color:#fff; background:transparent; border-radius:8px; padding:6px 10px; transition: all .16s ease-in-out; }
-    .size-btn.active, .size-btn:hover { border-color:#ff3c00; color:#fff; background: rgba(255,60,0,0.18); box-shadow: 0 0 0 .15rem rgba(255,60,0,.25); }
-    .qty-btn { width:34px; height:34px; border:1px solid rgba(255,255,255,0.3); background:transparent; color:#fff; border-radius:8px; }
-    .price, .subtotal { color:#fff; font-weight:700; }
-    .nav-tabs {
-      border-bottom: 2px solid #ff3c00;
-      background: transparent;
-      border-radius: 12px 12px 0 0;
-      overflow: hidden;
-    }
-    .nav-tabs .nav-link {
-      color: #fff;
-      background: transparent;
-      border: none;
-      font-weight: 600;
-      border-radius: 8px 8px 0 0;
-      margin-right: 8px;
-      padding: 10px 22px;
-      transition: background 0.18s, color 0.18s;
-    }
-    .nav-tabs .nav-link.active {
-      color: #fff;  
-      transform: translateY(0);
-      background: linear-gradient(180deg, #e03800 0%, #d93300 100%);
-    }
-    .nav-tabs .nav-link:hover {
-      background: linear-gradient(180deg, #ff561f 0%, #e03800 100%);
-      color: var(--tt-white); 
-      border-color: #ff6a38; 
-      transform: translateY(-2px);
-      box-shadow: 
-        inset 0 1px 1px rgba(255, 255, 255, 0.3),
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        0 12px 24px rgba(255, 60, 0, 0.3);
-    }
-    .tab-content {
-      color: #fff;
-      background: transparent;
-      border-radius: 0 0 12px 12px;
-      padding-top: 1.5rem;
-      min-height: 80px;
-    }
-
-    .qty-btn:hover, .qty-btn:focus { border-color:#ff3c00; box-shadow: 0 0 0 .12rem rgba(255,60,0,.18); }
-  </style>
+  <link href="style/style.css?v=1763094445" rel="stylesheet">
 </head>
 <body style="padding-top: 2rem; padding-bottom: 2rem;">
   <div class="container">
