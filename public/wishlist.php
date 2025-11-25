@@ -23,48 +23,9 @@ while($row = mysqli_fetch_assoc($res)) { $items[] = $row; }
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="theme.css?v=1763094445" rel="stylesheet">
-  <style>
-    body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
-    .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
-    .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
-    
-    /* Product Card Styles from index.php */
-    .product-tile { background: #1e1e1e; border-radius: 16px; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5); transition: transform .25s ease, box-shadow .25s ease; position: relative; display: flex; flex-direction: column; height: 100%; }
-    .product-tile:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(255,60,0,0.20); }
-    .product-tile .thumb { height: 220px; object-fit: cover; width: 100%; display: block; }
-    .product-body { padding:12px 14px; display:flex; flex-direction:column; gap:6px; flex-grow: 1; }
-    .product-title {
-      color:#fff; font-weight:600; line-height:1.25;
-      display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient: vertical;
-      overflow:hidden; text-overflow: ellipsis; max-height:2.5em;
-      min-height:2.5em;
-    }
-    .product-price { color:#fff; font-weight:700; }
-    .product-footer { padding: 0 14px 12px; margin-top: auto; }
-      @media (max-width: 991px) {
-        .col-lg-3 { flex: 0 0 50%; max-width: 50%; }
-      }
-      @media (max-width: 767px) {
-        .container { padding-left: 0.5rem; padding-right: 0.5rem; }
-        .card-glass { padding: 1rem; border-radius: 12px; }
-        .row.g-4 { gap: 1rem 0.5rem; }
-        .col-lg-3, .col-md-4, .col-sm-6 { flex: 0 0 100%; max-width: 100%; }
-        .product-tile { border-radius: 10px; }
-        .product-tile .thumb { height: 160px; }
-        .product-title { font-size: 1rem; min-height: 2em; }
-        .brand-title { font-size: 1.2rem; }
-        .btn, .form-control { font-size: 1rem; }
-        .product-footer { padding: 0 8px 8px; }
-      }
-      @media (max-width: 480px) {
-        .brand-title { font-size: 1rem; }
-        .card-glass { padding: 0.5rem; }
-        .product-tile .thumb { height: 120px; }
-        .product-title { font-size: 0.95rem; }
-      }
-  </style>
+  <link href="style/style.css?v=1763094445" rel="stylesheet">
 </head>
-<body style="padding-top: 2rem; padding-bottom: 2rem;">
+<body class="wishlist-page">
   <div class="container">
     <div class="card-glass p-3 p-md-4">
       <div class="d-flex justify-content-between align-items-center mb-4">

@@ -375,3 +375,7 @@ a.link-light-orange:hover { color: #ffa284; }
   .avatar { width: 40px; height: 40px; border-radius: 6px; }
   .nav-tabs .nav-link { font-size: 0.9rem; }
 }
+
+/* Wishlist page specific rules */
+.wishlist-page { padding-top: 2rem; padding-bottom: 2rem; }
+
