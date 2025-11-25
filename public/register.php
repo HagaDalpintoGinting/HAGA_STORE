@@ -68,46 +68,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="theme.css?v=1763094445" rel="stylesheet">
-  <style>
-    body {
-      background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
-      font-family: 'Quicksand', sans-serif;
-      color: #eee;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
-    .brand-title {
-      font-family: 'Anton', sans-serif;
-      letter-spacing: 2px;
-      color: #ff3c00;
-      text-shadow: 1px 1px 3px #000;
-    }
-    .card-glass {
-      background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(255,60,0,0.1);
-      backdrop-filter: blur(2px);
-    }
-    .form-control.bg-glass {
-      background: transparent;
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.2);
-    }
-    .form-control.bg-glass:focus {
-      background: transparent;
-      color: #fff;
-      border-color: #ff3c00;
-      box-shadow: 0 0 0 .25rem rgba(255,60,0,.15);
-    }
-    .form-control::placeholder { color: rgba(255,255,255,0.8); opacity: 1; }
-    /* Buttons use global theme.css */
-    a.link-light-orange { color: #ff7a52; text-decoration: none; }
-    a.link-light-orange:hover { color: #ffa284; }
-  </style>
+  <link href="style/style.css?v=1763094445" rel="stylesheet">
 </head>
-<body>
+<body class="register-page">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-md-7 col-lg-6 col-xl-5">

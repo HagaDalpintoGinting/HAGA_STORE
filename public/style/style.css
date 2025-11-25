@@ -344,6 +344,9 @@ a.link-light-orange:hover { color: #ffa284; }
   background: rgba(44,10,5,0.7) !important;
 }
 
+/* Register page specific rules */
+.register-page { min-height: 100vh; display: flex; align-items: center; }
+
 /* Profile page specific rules */
 .form-select.bg-glass {
   background-color: transparent;
