@@ -327,3 +327,6 @@ a.link-light-orange:hover { color: #ffa284; }
 @media (max-width: 480px) {
   .table-glass td, .table-glass th { font-size: 0.9rem; padding: 0.35rem; }
 }
+
+/* Forgot page specific rules */
+.forgot-page { min-height: 100vh; display: flex; align-items: center; }
