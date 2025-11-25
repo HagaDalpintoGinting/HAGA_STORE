@@ -50,13 +50,9 @@ function rupiah($n){ return 'Rp '.number_format((int)$n,0,',','.'); }
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="theme.css?v=1763094445" rel="stylesheet">
-  <style>
-    body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
-    .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
-    .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
-  </style>
+  <link href="style/style.css?v=1763094445" rel="stylesheet">
 </head>
-<body style="padding-top: 2rem; padding-bottom: 2rem;">
+<body class="orders-page" style="padding-top: 2rem; padding-bottom: 2rem;">
   <div class="container">
     <div class="mb-3">
       <a href="index.php" class="btn btn-outline-theme"><i class="bi bi-arrow-left"></i> Kembali</a>
@@ -122,18 +118,7 @@ function rupiah($n){ return 'Rp '.number_format((int)$n,0,',','.'); }
                 </tbody>
               </table>
             </div>
-            <style>
-              .order-table-custom {
-                background: transparent !important;
-              }
-              .order-table-custom th, .order-table-custom td {
-                color: #fff !important;
-                background: transparent !important;
-              }
-              .order-table-custom thead {
-                background: rgba(44,10,5,0.7) !important;
-              }
-            </style>
+            
             <?php if (!in_array($status, ['completed','cancelled'])): ?>
               <div class="d-flex gap-2 mt-3">
                 <?php if (in_array($status, ['shipped','paid'])): ?>

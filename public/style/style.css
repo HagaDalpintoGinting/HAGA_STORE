@@ -330,3 +330,16 @@ a.link-light-orange:hover { color: #ffa284; }
 
 /* Forgot page specific rules */
 .forgot-page { min-height: 100vh; display: flex; align-items: center; }
+
+/* Orders page specific rules */
+.orders-page .order-table-custom {
+  background: transparent !important;
+}
+.orders-page .order-table-custom th,
+.orders-page .order-table-custom td {
+  color: #fff !important;
+  background: transparent !important;
+}
+.orders-page .order-table-custom thead {
+  background: rgba(44,10,5,0.7) !important;
+}
