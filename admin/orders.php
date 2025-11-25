@@ -67,32 +67,7 @@ if ($viewId > 0) {
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="../public/theme.css?v=1763094445" rel="stylesheet">
   <link href="theme.css" rel="stylesheet">
-  <style>
-    body { font-family: 'Quicksand', sans-serif; background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); color: #fff; }
-    .container-fluid { padding-left: 2rem; padding-right: 2rem; }
-    .card { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border-radius: 18px; border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 10px 30px rgba(255,60,0,0.08); }
-    .table { background: rgba(26,26,26,0.5); color: #fff; }
-    .table th, .table td { border-color: rgba(255,255,255,0.12); }
-    .badge.bg-info { background-color: #ff3c00 !important; color: #fff; }
-    @media (max-width: 991px) {
-      .container-fluid { padding-left: 1rem; padding-right: 1rem; }
-      .card { border-radius: 12px; }
-      .table-responsive { overflow-x: auto; }
-    }
-    @media (max-width: 767px) {
-      .container-fluid { padding-left: 0.5rem; padding-right: 0.5rem; }
-      .card { padding: 1rem !important; border-radius: 10px; }
-      h2, h4, .card-title { font-size: 1.1rem; }
-      .row.mb-3 > .col-md-3 { flex: 0 0 100%; max-width: 100%; margin-bottom: 0.5rem; }
-      .table th, .table td { font-size: 0.95rem; padding: 0.5rem; }
-      .form-control, .btn { font-size: 1rem; }
-    }
-    @media (max-width: 480px) {
-      .container-fluid { padding-left: 0.2rem; padding-right: 0.2rem; }
-      .card { padding: 0.5rem !important; }
-      .table th, .table td { font-size: 0.9rem; padding: 0.35rem; }
-    }
-  </style>
+
 </head>
 <body class="p-4">
   <div class="container-fluid">

@@ -1,6 +1,6 @@
 /* Admin Panel Specific Styles */
 body {
-  background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
+  background: #2c0a05;
   font-family: 'Quicksand', sans-serif;
   color: #fff;
 }
@@ -85,4 +85,28 @@ thead {
 /* Tambah sedikit highlight pada baris hover agar teks lebih terbaca */
 .table-hover tbody tr:hover > * {
     background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Orders page specific additions (moved from admin/orders.php) */
+.container-fluid { padding-left: 2rem; padding-right: 2rem; }
+
+.badge.bg-info { background-color: #ff3c00 !important; color: #fff; }
+
+@media (max-width: 991px) {
+  .container-fluid { padding-left: 1rem; padding-right: 1rem; }
+  .card { border-radius: 12px; }
+  .table-responsive { overflow-x: auto; }
+}
+@media (max-width: 767px) {
+  .container-fluid { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .card { padding: 1rem !important; border-radius: 10px; }
+  h2, h4, .card-title { font-size: 1.1rem; }
+  .row.mb-3 > .col-md-3 { flex: 0 0 100%; max-width: 100%; margin-bottom: 0.5rem; }
+  .table th, .table td { font-size: 0.95rem; padding: 0.5rem; }
+  .form-control, .btn { font-size: 1rem; }
+}
+@media (max-width: 480px) {
+  .container-fluid { padding-left: 0.2rem; padding-right: 0.2rem; }
+  .card { padding: 0.5rem !important; }
+  .table th, .table td { font-size: 0.9rem; padding: 0.35rem; }
 }
