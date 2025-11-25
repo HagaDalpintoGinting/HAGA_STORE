@@ -303,3 +303,8 @@ input[type="search"]::placeholder { color: #fff !important; opacity: 1; }
 }
 a.link-light-orange { color: #ff7a52; text-decoration: none; }
 a.link-light-orange:hover { color: #ffa284; }
+
+/* Checkout page specific rules */
+.table-glass { --bs-table-bg: transparent; --bs-table-color:#fff; color:#fff; }
+/* Use page-scoped footer override to avoid affecting other pages */
+.checkout-page footer { background: transparent !important; box-shadow:none !important; }
