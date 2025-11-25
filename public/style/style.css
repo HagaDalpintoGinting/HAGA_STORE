@@ -1,6 +1,6 @@
 /* Extracted styles from index.php - do not change visual rules here */
 body {
-  background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%);
+  background: #2c0a05;
   font-family: 'Quicksand', sans-serif;
   color: #eee;
 }
@@ -308,3 +308,22 @@ a.link-light-orange:hover { color: #ffa284; }
 .table-glass { --bs-table-bg: transparent; --bs-table-color:#fff; color:#fff; }
 /* Use page-scoped footer override to avoid affecting other pages */
 .checkout-page footer { background: transparent !important; box-shadow:none !important; }
+
+/* Cart page specific rules */
+.table-glass thead th { background-color: rgba(255,255,255,0.06); color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.table-glass tbody tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
+.table-glass tbody tr:hover { background-color: rgba(255,60,0,0.06); }
+.table-glass td, .table-glass th { padding: .9rem .8rem; vertical-align: middle; }
+.product-name { color:#ffffff; }
+/* Scope footer override to cart page only */
+.cart-page footer { background: transparent !important; box-shadow: none !important; }
+
+@media (max-width: 991px) {
+  .table-responsive { overflow-x: auto; }
+}
+@media (max-width: 767px) {
+  .table-glass td, .table-glass th { font-size: 0.95rem; padding: 0.5rem; }
+}
+@media (max-width: 480px) {
+  .table-glass td, .table-glass th { font-size: 0.9rem; padding: 0.35rem; }
+}

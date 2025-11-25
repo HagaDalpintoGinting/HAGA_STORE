@@ -51,55 +51,9 @@ if (!empty($_SESSION['cart'])) {
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Anton&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link href="theme.css?v=1763094445" rel="stylesheet">
-  <style>
-    body { background: linear-gradient(145deg, #1a1a1a 0%, #2c0a05 100%); font-family: 'Quicksand', sans-serif; color: #fff; }
-    .brand-title { font-family: 'Anton', sans-serif; letter-spacing: 2px; color: #ff3c00; text-shadow: 1px 1px 3px #000; }
-    .card-glass { background: linear-gradient(135deg, rgba(26,26,26,0.5) 0%, rgba(44,10,5,0.5) 100%); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; box-shadow: 0 10px 30px rgba(255,60,0,0.1); backdrop-filter: blur(2px); }
-    .form-control.bg-glass { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
-    .form-control.bg-glass:focus { background: transparent; color: #fff; border-color: #ff3c00; box-shadow: 0 0 0 .25rem rgba(255,60,0,.15); }
-    .form-control.bg-glass::placeholder { color: rgba(255,255,255,0.85); opacity: 1; }
-    /* Buttons use global theme.css */
-    a.link-light-orange { color: #ff7a52; text-decoration: none; }
-    a.link-light-orange:hover { color: #ffa284; }
-
-    /* Table glass theme */
-    .table-glass {
-      --bs-table-bg: transparent;
-      --bs-table-color: #ffffff;
-      --bs-table-striped-color: #ffffff;
-      --bs-table-hover-color: #ffffff;
-      color:#fff;
-    }
-    .table-glass thead th { background-color: rgba(255,255,255,0.06); color:#fff; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .table-glass tbody tr { border-bottom: 1px solid rgba(255,255,255,0.08); }
-    .table-glass tbody tr:hover { background-color: rgba(255,60,0,0.06); }
-    .table-glass td, .table-glass th { padding: .9rem .8rem; vertical-align: middle; }
-    .price { color:#ffffff !important; font-weight:600; }
-    .subtotal { color:#ffffff !important; font-weight:600; }
-    .product-name { color:#ffffff; }
-    footer { background: transparent !important; box-shadow: none !important; }
-      @media (max-width: 991px) {
-        .container { padding-left: 10px; padding-right: 10px; }
-        .card-glass { border-radius: 12px; }
-        .table-responsive { overflow-x: auto; }
-      }
-      @media (max-width: 767px) {
-        .container { padding-left: 5px; padding-right: 5px; }
-        .card-glass { padding: 1rem; border-radius: 10px; }
-        .table-glass td, .table-glass th { font-size: 0.95rem; padding: 0.5rem; }
-        .brand-title { font-size: 1.2rem; }
-        .btn, .form-control { font-size: 1rem; }
-        .table-responsive { overflow-x: auto; }
-      }
-      @media (max-width: 480px) {
-        .container { padding-left: 2px; padding-right: 2px; }
-        .card-glass { padding: 0.5rem; }
-        .table-glass td, .table-glass th { font-size: 0.9rem; padding: 0.35rem; }
-        .brand-title { font-size: 1rem; }
-      }
-  </style>
+  <link href="style/style.css?v=1763094445" rel="stylesheet">
 </head>
-<body style="padding-top: 2rem; padding-bottom: 2rem;">
+<body class="cart-page" style="padding-top: 2rem; padding-bottom: 2rem;">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col-12 col-xl-10">
