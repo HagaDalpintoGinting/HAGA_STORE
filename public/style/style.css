@@ -5,7 +5,7 @@ body {
   color: #eee;
 }
 .container {
-  max-width: 1200px;
+  max-width: fit-content;
   margin: 0 auto;
 }
 @media (max-width: 991px) {
@@ -157,7 +157,7 @@ footer {
   margin-top: 60px;
   padding: 30px;
   background-color: #1a1a1a;
-  color: #aaa;
+  color: #aaaaaa;
   text-align: center;
   border-top: 2px solid #333; 
   font-size: 0.9rem;
@@ -378,4 +378,25 @@ a.link-light-orange:hover { color: #ffa284; }
 
 /* Wishlist page specific rules */
 .wishlist-page { padding-top: 2rem; padding-bottom: 2rem; }
+
+/* Global responsive helpers */
+/* Make images scale nicely across devices */
+.img-fluid, img { max-width: 100%; height: auto; display: block; }
+
+/* Touch-friendly horizontal scrolling for wide tables / grids */
+.table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+/* Ensure cards and forms behave well on very small screens */
+@media (max-width: 576px) {
+  .btn, .form-control, .form-select { width: 100%; }
+  .product-meta { flex-wrap: wrap; gap: 6px; }
+  .product-footer { padding-left: 0.5rem; padding-right: 0.5rem; }
+  .card-glass { padding: 0.75rem; }
+}
+
+/* Improve grid wrapping for product lists */
+@media (max-width: 768px) {
+  .row.g-4 { gap: 1rem; }
+  .col-lg-3, .col-md-4, .col-sm-6 { flex: 0 0 100%; max-width: 100%; }
+}
 
