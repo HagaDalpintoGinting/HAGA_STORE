@@ -68,9 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <i class="bi bi-bag-check text-light me-2" style="font-size:1.6rem;"></i>
             <h1 class="h4 m-0 brand-title">THREAD THEORY</h1>
           </div>
-
           
-
           <?php if ($err): ?>
             <div class="alert alert-danger py-2" role="alert">
               <?= htmlspecialchars($err) ?>
